@@ -5,7 +5,7 @@
 #include "../include/Ship2.h"
 
 Ship2::Ship2() {
-    length = 2;
+    //length = 2;
     numOfAliveParts = length;
     setAlive(true);
 }

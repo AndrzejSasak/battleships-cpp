@@ -30,6 +30,7 @@ public:
     friend void setDestroyedUserShipWhole(std::string newSquare, Interface* interface);
     friend void setDestroyedEnemyShipWhole(std::string newSquare, Interface* interface);
 
+
 };
 
 #endif //JIPP2_INTERFACE_H

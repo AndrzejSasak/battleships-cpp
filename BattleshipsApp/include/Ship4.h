@@ -9,7 +9,7 @@
 
 class Ship4 : public Ship {
 private:
-    int length;
+    const int length = 4;
     int numOfAliveParts;
     std::string shipSquare[4];
 

@@ -5,7 +5,7 @@
 #include "../include/Ship3.h"
 
 Ship3::Ship3() {
-    length = 3;
+   // length = 3;
     numOfAliveParts = length;
     setAlive(true);
 }

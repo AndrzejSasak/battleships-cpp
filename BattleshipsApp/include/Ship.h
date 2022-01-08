@@ -8,7 +8,6 @@
 
 class Ship {
 private:
-    int length;
     int numOfAliveParts;
     bool isAlive;
     bool isFriendly;
@@ -28,6 +27,7 @@ public:
     virtual void initShip(std::string *shipSquares) = 0;
     virtual std::string* getShipSquares() = 0;
     //virtual void setAlive(bool newAlive);
+
 
 };
 

@@ -5,7 +5,7 @@
 #include "../include/Ship4.h"
 
 Ship4::Ship4() {
-    length = 4;
+    //length = 4;
     numOfAliveParts = length;
     setAlive(true);
 }

@@ -3,6 +3,7 @@
 //
 
 #include "../include/Interface.h"
+#include "../include/Ship.h"
 
 #include <iostream>
 
@@ -22,7 +23,7 @@ Interface::Interface() {
     }
 }
 
-//prints interface
+//prints interf
 void Interface::printInterface()  {
     std::cout << "YOUR AREA:" << std::endl;
     std::cout << "  0 1 2 3 4 5 6 7 8 9" << std::endl;
@@ -159,9 +160,10 @@ void setTakenByUserShip(std::string newSquare, Interface* interface) {
 }
 
 //sets an unused enemy square to a ship square
+//mozna poprzeciazac funkcje
 void setTakenByEnemyShip(std::string newSquare, Interface* interface) {
     int squareIndex = parseSquareInputToIndex(newSquare);
-    interface->enemyArea[squareIndex] = TAKENBYSHIP;
+    //interf->enemyArea[squareIndex] = TAKENBYSHIP;
 }
 
 void setDestroyedUserShipPart(std::string newSquare, Interface* interface) {
@@ -176,7 +178,7 @@ void setDestroyedUserShipWhole(std::string newSquare, Interface* interface) {
 
 void setDestroyedEnemyShipWhole(std::string newSquare, Interface* interface) {
     int squareIndex = parseSquareInputToIndex(newSquare);
-    interface->userArea[squareIndex] = DESTROYEDSHIPFINAL;
+    interface->enemyArea[squareIndex] = DESTROYEDSHIPFINAL;
 }
 
 void setDestroyedEnemyShipPart(std::string newSquare, Interface *interface) {

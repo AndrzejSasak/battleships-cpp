@@ -9,7 +9,8 @@
 
 class Ship3 : public Ship {
 private:
-    int length;
+    const int length = 3;
+
     int numOfAliveParts;
     std::string shipSquare[3];
 
@@ -24,6 +25,8 @@ public:
     int getNumOfAliveParts() override;
 
     void setNumOfAliveParts(int num) override;
+
+
 };
 
 #endif //JIPP2_SHIP3_H

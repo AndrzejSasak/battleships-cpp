@@ -5,8 +5,9 @@
 #include "../include/Ship1.h"
 
 Ship1::Ship1() {
-    length = 1;
+    //length = 1;
     numOfAliveParts = length;
+    //numberOfShips = 4;
     setAlive(true);
 }
 
@@ -29,4 +30,5 @@ void Ship1::setNumOfAliveParts(int num) {
 std::string* Ship1::getShipSquares() {
     return shipSquare;
 }
+
 
