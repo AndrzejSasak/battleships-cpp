@@ -15,6 +15,7 @@
 #include <ctime>
 #include <windows.h>
 #include <fstream>
+#include <map>
 //#include "../include/Ship.h"
 
 void printWelcomeScreen() {
@@ -596,6 +597,7 @@ void pickAllEnemyShips(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShip
         enemyShips4[i]->initShip(shipSquare);
         for(int i = 0; i < enemyShips4[0]->getLength(); i++)  setTakenByEnemyShip(shipSquare[i], interf);
     }
+    board.close();
 }
 
 void pickAllUserShips(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship *userShips4[], User *user, Interface *interf) {
@@ -621,8 +623,82 @@ void pickAllUserShips(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[]
     }
 }
 
-int main() {
+void selectUser(char *argv1, char *argv2) {
+    std::map<std::string, std::string> map;
+    std::string name(argv1);
+    std::string password(argv2);
+
+    std::fstream usersFile;
+    usersFile.open("../../BattleshipsApp/users_database/users.txt", std::ios::in);
+    if(!usersFile.is_open()) {
+        std::cout << "ERROR OPENING FILE TO READ" << std::endl;
+    }
+    std::ifstream usersIn("../../BattleshipsApp/users_database/users.txt");
+
+    while(usersIn) {
+        std::string username;
+        std::string userpassword;
+        usersIn >> username;
+        usersIn >> userpassword;
+        map[username] = userpassword;
+    }
+    if(map.find(name) != map.end() && map[name] == password) {
+        std::cout << "Welcome " << map.find(name)->first << "!" << std::endl;
+        std::cout << "Successfully logged in!" << std::endl;
+    } else if (map.find(name) != map.end() && map[name] != password) {
+        std::cout << "Wrong password for the entered username!" << std::endl;
+        exit(1);
+    } else if(map.find(name) == map.end()) {
+        std::cout << "Entered name is new in the database. Welcome new user!" << std::endl;
+    }
+
+    std::pair<std::string, std::string> newUser;
+    newUser.first = name;
+    newUser.second = password;
+    map.insert(newUser);
+
+    std::cout << map.find(name)->first << std::endl;
+    std::cout << map.find(name)->second << std::endl;
+    //now save all the users from map to file
+    usersFile.close();
+    usersFile.open("../../BattleshipsApp/users_database/users.txt", std::ios::out);
+    std::ofstream usersOut("../../BattleshipsApp/users_database/users.txt");
+
+    if(!usersOut.is_open()) {
+        std::cout << "ERROR OPENING FILE TO WRITE" << std::endl;
+    }
+
+    std::cout << "HASLO" << map["carlos"] << std::endl;
+
+    for(auto &pair: map) {
+        std::cout << "HERE" << std::endl;
+        std::string username = pair.first;
+        std::cout << username.length() << std::endl;
+        for(int i = 0; i < username.length(); i++) {
+            std::cout << username[i] << std::endl;
+            usersOut.put(username[i]);
+        }
+        usersOut.put(' ');
+        std::string userpassword = pair.second;
+        for(int i = 0; i < userpassword.length(); i++) {
+            std::cout << userpassword[i] << std::endl;
+            usersOut.put(userpassword[i]);
+        }
+        usersOut << std::endl;
+    }
+    std::cout << "SLEEPING" << std::endl;
+    Sleep(3000);
+    usersOut.close();
+    exit(10);
+
+
+
+}
+
+int main(int argc, char *argv[]) {
     srand(time(nullptr));
+
+    if(argc == 3) selectUser(argv[1], argv[2]);
 
     printWelcomeScreen();
 
