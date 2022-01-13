@@ -4,7 +4,6 @@
 
 #ifndef JIPP2_SHIP1_H
 #define JIPP2_SHIP1_H
-
 #include "Ship.h"
 
 class Ship1 : public Ship {
@@ -22,6 +21,7 @@ public:
     int getLength() override;
 
     int getNumOfAliveParts() override;
+
 
     void setNumOfAliveParts(int num) override;
 };

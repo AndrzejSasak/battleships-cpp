@@ -5,7 +5,7 @@
 #ifndef JIPP2_INTERFACE_H
 #define JIPP2_INTERFACE_H
 
-#include <lib.h>
+//#include <lib.h>
 #include <iostream>
 
 class Interface {
@@ -20,15 +20,15 @@ public:
     //prints the interface
     void printInterface();
 
-    friend void setTakenByUserShip(std::string newSquare, Interface* interface);
-    friend void setTakenByEnemyShip(std::string newSquare, Interface* interface);
-    friend void setDestroyedUserShipPart(std::string newSquare, Interface* interface);
-    friend void setDestroyedEnemyShipPart(std::string newSquare, Interface* interface);
-    friend bool isTakenByShip(std::string newSquare, Interface* interface);
-    friend void setAlreadyShotUserSquare(std::string newSquare, Interface *interface);
-    friend void setAlreadyShotEnemySquare(std::string newSquare, Interface *interface);
-    friend void setDestroyedUserShipWhole(std::string newSquare, Interface* interface);
-    friend void setDestroyedEnemyShipWhole(std::string newSquare, Interface* interface);
+    void setTakenByUserShip(std::string newSquare, Interface* interf);
+    void setTakenByEnemyShip(std::string newSquare, Interface* interf);
+    void setDestroyedUserShipPart(std::string newSquare, Interface* interf);
+    void setDestroyedEnemyShipPart(std::string newSquare, Interface* interf);
+    bool isTakenByShip(std::string newSquare, Interface* interf);
+    void setAlreadyShotUserSquare(std::string newSquare, Interface *interf);
+    void setAlreadyShotEnemySquare(std::string newSquare, Interface *interf);
+    void setDestroyedUserShipWhole(std::string newSquare, Interface* interf);
+    void setDestroyedEnemyShipWhole(std::string newSquare, Interface* interf);
 
 
 };

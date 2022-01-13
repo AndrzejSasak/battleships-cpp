@@ -4,7 +4,7 @@
 
 #include "../include/Interface.h"
 #include "../include/Ship.h"
-
+#include <lib.h>
 #include <iostream>
 
 #define TAKENBYSHIP "@"
@@ -93,115 +93,116 @@ void Interface::printInterface()  {
 }
 
 //sets an unused user square to a ship square
-void setTakenByUserShip(std::string newSquare, Interface* interface) {
+void Interface::setTakenByUserShip(std::string newSquare, Interface* interf) {
     int squareIndex = parseSquareInputToIndex(newSquare);
-    interface->userArea[squareIndex] = TAKENBYSHIP;
+    interf->userArea[squareIndex] = TAKENBYSHIP;
 
     if(newSquare[0] != 'A' && newSquare[0] != 'J' && newSquare[1] != '0' && newSquare[1] != '9') {
-        if (interface->userArea[squareIndex-11] != TAKENBYSHIP) interface->userArea[squareIndex-11] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex-10] != TAKENBYSHIP) interface->userArea[squareIndex-10] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex-9] != TAKENBYSHIP) interface->userArea[squareIndex-9] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex-1] != TAKENBYSHIP) interface->userArea[squareIndex-1] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+1] != TAKENBYSHIP) interface->userArea[squareIndex+1] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+9] != TAKENBYSHIP) interface->userArea[squareIndex+9] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+10] != TAKENBYSHIP) interface->userArea[squareIndex+10] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+11] != TAKENBYSHIP) interface->userArea[squareIndex+11] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-11] != TAKENBYSHIP) interf->userArea[squareIndex-11] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-10] != TAKENBYSHIP) interf->userArea[squareIndex-10] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-9] != TAKENBYSHIP) interf->userArea[squareIndex-9] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-1] != TAKENBYSHIP) interf->userArea[squareIndex-1] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+1] != TAKENBYSHIP) interf->userArea[squareIndex+1] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+9] != TAKENBYSHIP) interf->userArea[squareIndex+9] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+10] != TAKENBYSHIP) interf->userArea[squareIndex+10] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+11] != TAKENBYSHIP) interf->userArea[squareIndex+11] = SURROUNDINGSHIP;
         return;
     } else if (newSquare[1] == '0' && newSquare[0] != 'A' && newSquare[0] != 'J') {
-        if (interface->userArea[squareIndex-10] != TAKENBYSHIP) interface->userArea[squareIndex-10] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex-9] != TAKENBYSHIP) interface->userArea[squareIndex-9] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+1] != TAKENBYSHIP) interface->userArea[squareIndex+1] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+10] != TAKENBYSHIP) interface->userArea[squareIndex+10] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+11] != TAKENBYSHIP)interface->userArea[squareIndex+11] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-10] != TAKENBYSHIP) interf->userArea[squareIndex-10] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-9] != TAKENBYSHIP) interf->userArea[squareIndex-9] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+1] != TAKENBYSHIP) interf->userArea[squareIndex+1] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+10] != TAKENBYSHIP) interf->userArea[squareIndex+10] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+11] != TAKENBYSHIP) interf->userArea[squareIndex+11] = SURROUNDINGSHIP;
         return;
     } else if (newSquare[1] == '9' && newSquare[0] != 'A' && newSquare[0] != 'J') {
-        if (interface->userArea[squareIndex-10] != TAKENBYSHIP) interface->userArea[squareIndex-10] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex-11] != TAKENBYSHIP)interface->userArea[squareIndex-11] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+1] != TAKENBYSHIP) interface->userArea[squareIndex+1] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+9] != TAKENBYSHIP) interface->userArea[squareIndex+9] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+10] != TAKENBYSHIP)interface->userArea[squareIndex+10] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-10] != TAKENBYSHIP) interf->userArea[squareIndex-10] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-11] != TAKENBYSHIP)interf->userArea[squareIndex-11] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+1] != TAKENBYSHIP) interf->userArea[squareIndex+1] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+9] != TAKENBYSHIP) interf->userArea[squareIndex+9] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+10] != TAKENBYSHIP)interf->userArea[squareIndex+10] = SURROUNDINGSHIP;
         return;
     } else if (newSquare[0] == 'A' && newSquare[1] != '0' && newSquare[1] != '9') {
-        if (interface->userArea[squareIndex-1] != TAKENBYSHIP) interface->userArea[squareIndex-1] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+1] != TAKENBYSHIP) interface->userArea[squareIndex+1] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+9] != TAKENBYSHIP) interface->userArea[squareIndex+9] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+10] != TAKENBYSHIP) interface->userArea[squareIndex+10] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+11] != TAKENBYSHIP) interface->userArea[squareIndex+11] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-1] != TAKENBYSHIP) interf->userArea[squareIndex-1] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+1] != TAKENBYSHIP) interf->userArea[squareIndex+1] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+9] != TAKENBYSHIP) interf->userArea[squareIndex+9] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+10] != TAKENBYSHIP) interf->userArea[squareIndex+10] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+11] != TAKENBYSHIP) interf->userArea[squareIndex+11] = SURROUNDINGSHIP;
         return;
     } else if (newSquare[0] == 'J' && newSquare[1] != '0' && newSquare[1] != '9') {
-        if (interface->userArea[squareIndex-1] != TAKENBYSHIP) interface->userArea[squareIndex-1] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+1] != TAKENBYSHIP) interface->userArea[squareIndex+1] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex-11] != TAKENBYSHIP) interface->userArea[squareIndex-11] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex-10] != TAKENBYSHIP) interface->userArea[squareIndex-10] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex-9] != TAKENBYSHIP) interface->userArea[squareIndex-9] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-1] != TAKENBYSHIP) interf->userArea[squareIndex-1] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+1] != TAKENBYSHIP) interf->userArea[squareIndex+1] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-11] != TAKENBYSHIP) interf->userArea[squareIndex-11] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-10] != TAKENBYSHIP) interf->userArea[squareIndex-10] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-9] != TAKENBYSHIP) interf->userArea[squareIndex-9] = SURROUNDINGSHIP;
         return;
     } else if(newSquare[0] == 'A' && newSquare[1] == '0') {
-        if (interface->userArea[squareIndex+1] != TAKENBYSHIP) interface->userArea[squareIndex+1] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+10] != TAKENBYSHIP) interface->userArea[squareIndex+10] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+11] != TAKENBYSHIP) interface->userArea[squareIndex+11] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+1] != TAKENBYSHIP) interf->userArea[squareIndex+1] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+10] != TAKENBYSHIP) interf->userArea[squareIndex+10] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+11] != TAKENBYSHIP) interf->userArea[squareIndex+11] = SURROUNDINGSHIP;
         return;
     } else if(newSquare[0] == 'J' && newSquare[1] == '0') {
-        if (interface->userArea[squareIndex+1] != TAKENBYSHIP) interface->userArea[squareIndex+1] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex-9] != TAKENBYSHIP) interface->userArea[squareIndex-9] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex-10] != TAKENBYSHIP) interface->userArea[squareIndex-10] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+1] != TAKENBYSHIP) interf->userArea[squareIndex+1] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-9] != TAKENBYSHIP) interf->userArea[squareIndex-9] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-10] != TAKENBYSHIP) interf->userArea[squareIndex-10] = SURROUNDINGSHIP;
         return;
     } else if(newSquare[0] == 'A' && newSquare[1] == '9') {
-        if (interface->userArea[squareIndex-1] != TAKENBYSHIP) interface->userArea[squareIndex-1] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+9] != TAKENBYSHIP) interface->userArea[squareIndex+9] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex+10] != TAKENBYSHIP) interface->userArea[squareIndex+10] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-1] != TAKENBYSHIP) interf->userArea[squareIndex-1] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+9] != TAKENBYSHIP) interf->userArea[squareIndex+9] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex+10] != TAKENBYSHIP) interf->userArea[squareIndex+10] = SURROUNDINGSHIP;
         return;
     } else if(newSquare[0] == 'J' && newSquare[1] == '9') {
-        if (interface->userArea[squareIndex-1] != TAKENBYSHIP) interface->userArea[squareIndex-1] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex-11] != TAKENBYSHIP) interface->userArea[squareIndex-11] = SURROUNDINGSHIP;
-        if (interface->userArea[squareIndex-10] != TAKENBYSHIP) interface->userArea[squareIndex-10] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-1] != TAKENBYSHIP) interf->userArea[squareIndex-1] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-11] != TAKENBYSHIP) interf->userArea[squareIndex-11] = SURROUNDINGSHIP;
+        if (interf->userArea[squareIndex-10] != TAKENBYSHIP) interf->userArea[squareIndex-10] = SURROUNDINGSHIP;
         return;
     }
 
 }
 
+
 //sets an unused enemy square to a ship square
 //mozna poprzeciazac funkcje
-void setTakenByEnemyShip(std::string newSquare, Interface* interface) {
+void Interface::setTakenByEnemyShip(std::string newSquare, Interface* interf) {
     int squareIndex = parseSquareInputToIndex(newSquare);
     //interf->enemyArea[squareIndex] = TAKENBYSHIP;
 }
 
-void setDestroyedUserShipPart(std::string newSquare, Interface* interface) {
+void Interface::setDestroyedUserShipPart(std::string newSquare, Interface* interf) {
     int squareIndex = parseSquareInputToIndex(newSquare);
-    interface->userArea[squareIndex] = DESTROYEDSHIPPART;
+    interf->userArea[squareIndex] = DESTROYEDSHIPPART;
 }
 
-void setDestroyedUserShipWhole(std::string newSquare, Interface* interface) {
+void Interface::setDestroyedUserShipWhole(std::string newSquare, Interface* interf) {
     int squareIndex = parseSquareInputToIndex(newSquare);
-    interface->userArea[squareIndex] = DESTROYEDSHIPFINAL;
+    interf->userArea[squareIndex] = DESTROYEDSHIPFINAL;
 }
 
-void setDestroyedEnemyShipWhole(std::string newSquare, Interface* interface) {
+void Interface::setDestroyedEnemyShipWhole(std::string newSquare, Interface* interf) {
     int squareIndex = parseSquareInputToIndex(newSquare);
-    interface->enemyArea[squareIndex] = DESTROYEDSHIPFINAL;
+    interf->enemyArea[squareIndex] = DESTROYEDSHIPFINAL;
 }
 
-void setDestroyedEnemyShipPart(std::string newSquare, Interface *interface) {
+void Interface::setDestroyedEnemyShipPart(std::string newSquare, Interface *interf) {
     int squareIndex = parseSquareInputToIndex(newSquare);
-    interface->enemyArea[squareIndex] = DESTROYEDSHIPPART;
+    interf->enemyArea[squareIndex] = DESTROYEDSHIPPART;
 }
 
-bool isTakenByShip(std::string newSquare, Interface* interface) {
+bool Interface::isTakenByShip(std::string newSquare, Interface* interf) {
     int isTaken = false;
     int squareIndex = parseSquareInputToIndex(newSquare);
-    if(interface->userArea[squareIndex] == TAKENBYSHIP || interface->userArea[squareIndex] == SURROUNDINGSHIP) {
+    if(interf->userArea[squareIndex] == TAKENBYSHIP || interf->userArea[squareIndex] == SURROUNDINGSHIP) {
         isTaken = true;
     }
     return isTaken;
 }
 
 //mozna przeciazyc setAlreadyShotUserSquare oraz setAlreadyShotEnemySquare
-void setAlreadyShotUserSquare(std::string newSquare, Interface *interface) {
+void Interface::setAlreadyShotUserSquare(std::string newSquare, Interface *interf) {
     int squareIndex = parseSquareInputToIndex(newSquare);
-    interface->userArea[squareIndex] = ALREADYSHOTSQUARE;
+    interf->userArea[squareIndex] = ALREADYSHOTSQUARE;
 }
 
-void setAlreadyShotEnemySquare(std::string newSquare, Interface *interface) {
+void Interface::setAlreadyShotEnemySquare(std::string newSquare, Interface *interf) {
     int squareIndex = parseSquareInputToIndex(newSquare);
-    interface->enemyArea[squareIndex] = ALREADYSHOTSQUARE;
+    interf->enemyArea[squareIndex] = ALREADYSHOTSQUARE;
 }
