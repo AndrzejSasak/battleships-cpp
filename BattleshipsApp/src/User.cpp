@@ -59,3 +59,8 @@ void User::setNumOfAliveShipPts(int num) {
 int User::getNumOfAliveShipPts() {
     return numOfAliveShipPts;
 }
+
+void User::operator--() {
+    --numOfAliveShipPts;
+}
+

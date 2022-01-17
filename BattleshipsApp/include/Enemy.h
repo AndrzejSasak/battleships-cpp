@@ -49,7 +49,7 @@ public:
     void setPrevShotSquare(std::string newPrev);
     std::string getPrevShotSquare();
 
-
+    void operator--();
 
 };
 

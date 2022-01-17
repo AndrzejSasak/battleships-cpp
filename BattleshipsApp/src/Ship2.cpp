@@ -5,9 +5,14 @@
 #include "../include/Ship2.h"
 
 Ship2::Ship2() {
-    //length = 2;
     numOfAliveParts = length;
     setAlive(true);
+    //new allocation
+    shipSquare = new std::string[numOfAliveParts];
+}
+
+Ship2::~Ship2() {
+    delete shipSquare;
 }
 
 void Ship2::initShip(std::string *shipSquares) {
@@ -30,6 +35,5 @@ void Ship2::setNumOfAliveParts(int num) {
 int Ship2::getLength() {
     return length;
 }
-
 
 

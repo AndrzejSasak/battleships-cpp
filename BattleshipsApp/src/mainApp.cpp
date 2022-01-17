@@ -37,23 +37,17 @@ int main(int argc, char *argv[]) {
 
     //initialize memory for enemy ships
     Ship *userShips1[user.getNumOfShips1()];
-    for(int i = 0; i < user.getNumOfShips1(); i++) userShips1[i] = new Ship1();
     Ship *userShips2[user.getNumOfShips2()];
-    for(int i = 0; i < user.getNumOfShips2(); i++) userShips2[i] = new Ship2();
     Ship *userShips3[user.getNumOfShips3()];
-    for(int i = 0; i < user.getNumOfShips3(); i++) userShips3[i] = new Ship3();
     Ship *userShips4[user.getNumOfShips4()];
-    for(int i = 0; i < user.getNumOfShips4(); i++) userShips4[i] = new Ship4();
+    allocateUserShipsMemory(&user, userShips1, userShips2, userShips3, userShips4);
 
     //initialize memory for enemy ships
     Ship *enemyShips1[enemy.getNumOfShips1()];
-    for(int i = 0; i < user.getNumOfShips1(); i++) enemyShips1[i] = new Ship1();
-    Ship *enemyShips2[user.getNumOfShips2()];
-    for(int i = 0; i < user.getNumOfShips2(); i++) enemyShips2[i] = new Ship2();
-    Ship *enemyShips3[user.getNumOfShips3()];
-    for(int i = 0; i < user.getNumOfShips3(); i++) enemyShips3[i] = new Ship3();
-    Ship *enemyShips4[user.getNumOfShips4()];
-    for(int i = 0; i < user.getNumOfShips4(); i++) enemyShips4[i] = new Ship4();
+    Ship *enemyShips2[enemy.getNumOfShips2()];
+    Ship *enemyShips3[enemy.getNumOfShips3()];
+    Ship *enemyShips4[enemy.getNumOfShips4()];
+    allocateEnemyShipsMemory(&enemy, enemyShips1, enemyShips2, enemyShips3, enemyShips4);
 
     interf.printInterface();
 
@@ -66,36 +60,42 @@ int main(int argc, char *argv[]) {
     bool isUndecided = true;
     while(isUndecided) {
 
-        int wasEnemyHit = userShoot(enemyShips1, enemyShips2, enemyShips3, enemyShips4, &interf, &enemy);
+        int wasEnemyHit = userShoot(enemyShips1, enemyShips2, enemyShips3, enemyShips4, &interf, &user, &enemy);
         interf.printInterface();
         while(wasEnemyHit) {
-            enemy.setNumOfAliveShipPts(enemy.getNumOfAliveShipPts() - wasEnemyHit);
+           // enemy.setNumOfAliveShipPts(enemy.getNumOfAliveShipPts() - wasEnemyHit);
+            --enemy;
             if (enemy.getNumOfAliveShipPts() == 0) {
                 std::cout << "You have won the game! Congratulations!" << std::endl;
                 interf.printInterface();
                 isUndecided = false;
                 break;
             }
-            wasEnemyHit = userShoot(enemyShips1, enemyShips2, enemyShips3, enemyShips4, &interf, &enemy);
+            wasEnemyHit = userShoot(enemyShips1, enemyShips2, enemyShips3, enemyShips4, &interf, &user, &enemy);
             interf.printInterface();
         }
         if(!isUndecided) break;
 
-        int wasUserHit = enemyShoot(userShips1, userShips2, userShips3, userShips4, &interf, &enemy, &user);
-
-        while(wasUserHit) {
-            user.setNumOfAliveShipPts(user.getNumOfAliveShipPts() - wasUserHit);
-            std::cout << "ALIVE PTS: " << user.getNumOfAliveShipPts() << std::endl;
-            if(user.getNumOfAliveShipPts() == 0) {
-                std::cout << "Enemy has destroyes all your ships and won the game! You lost!" << std::endl;
-                isUndecided = false;
-                break;
+        //3 is number of shots the enemy takes
+        for(int i = 0; i < 3; i++) {
+            int wasUserHit = enemyShoot(userShips1, userShips2, userShips3, userShips4, &interf, &enemy, &user);
+            if(wasUserHit) {
+                //user.setNumOfAliveShipPts(user.getNumOfAliveShipPts() - wasUserHit);
+                --user;
+                   std::cout << "ALIVE PTS: " << user.getNumOfAliveShipPts() << std::endl;
+                    if(user.getNumOfAliveShipPts() == 0) {
+                        std::cout << "Enemy has destroyed all your ships and won the game! You lost!" << std::endl;
+                        isUndecided = false;
+                        break;
+                    }
             }
-            wasUserHit = enemyShoot(userShips1, userShips2, userShips3, userShips4, &interf, &enemy, &user);
         }
+
         interf.printInterface();
     }
 
+    deallocateEnemyShipsMemory(&enemy, userShips1, userShips2, userShips3, userShips4);
+    deallocateUserShipsMemory(&user, userShips1, userShips2, userShips3, userShips4);
 
     return 0;
 }

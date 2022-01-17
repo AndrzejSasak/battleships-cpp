@@ -11,7 +11,7 @@ void Ship::setAlive(bool newIsAlive) {
 bool Ship::getIsAlive() const {
     return isAlive;
 }
-
+/*
 bool Ship::getFriendly() const {
     return isFriendly;
 }
@@ -19,3 +19,4 @@ bool Ship::getFriendly() const {
 void Ship::setFriendly(bool newIsFriendly) {
     isFriendly = newIsFriendly;
 }
+*/

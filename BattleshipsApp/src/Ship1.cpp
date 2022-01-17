@@ -5,10 +5,14 @@
 #include "../include/Ship1.h"
 
 Ship1::Ship1() {
-    //length = 1;
     numOfAliveParts = length;
-    //numberOfShips = 4;
     setAlive(true);
+    //new allocation
+    shipSquare = new std::string[numOfAliveParts];
+}
+
+Ship1::~Ship1() {
+    delete shipSquare;
 }
 
 void Ship1::initShip(std::string *shipSquares) {

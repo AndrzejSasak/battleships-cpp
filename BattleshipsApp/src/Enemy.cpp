@@ -80,4 +80,8 @@ std::string Enemy::getPrevShotSquare() {
     return previouslyShotSquare;
 }
 
+void Enemy::operator--() {
+    --numOfAliveShipPts;
+}
+
 

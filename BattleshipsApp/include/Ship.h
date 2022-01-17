@@ -8,26 +8,24 @@
 
 class Ship {
 private:
-    int numOfAliveParts;
+    //int numOfAliveParts;
     bool isAlive;
-    bool isFriendly;
+    //bool isFriendly;
 public:
-    //napisac destruktor
-    //~Ship();
+    virtual ~Ship() = 0;
 
     void setAlive(bool newAlive);
     bool getIsAlive() const;
-
+    /*
     void setFriendly(bool newIsFriendly);
     bool getFriendly() const;
-
+    */
     virtual int getLength() = 0;
     virtual int getNumOfAliveParts() = 0;
     virtual void setNumOfAliveParts(int num) = 0;
     virtual void initShip(std::string *shipSquares) = 0;
     virtual std::string* getShipSquares() = 0;
     //virtual void setAlive(bool newAlive);
-
 
 };
 

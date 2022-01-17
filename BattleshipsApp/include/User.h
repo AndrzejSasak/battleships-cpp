@@ -37,6 +37,8 @@ public:
     void setShotSquare(int index, std::string value);
     std::string getShotSquare(int index);
 
+    void operator--();
+
 };
 
 #endif //BATTLESHIPS_USER_H

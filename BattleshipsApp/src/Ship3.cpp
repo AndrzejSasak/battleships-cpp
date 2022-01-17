@@ -5,9 +5,14 @@
 #include "../include/Ship3.h"
 
 Ship3::Ship3() {
-   // length = 3;
     numOfAliveParts = length;
     setAlive(true);
+    //new allocation
+    shipSquare = new std::string[numOfAliveParts];
+}
+
+Ship3::~Ship3() {
+    delete shipSquare;
 }
 
 void Ship3::initShip(std::string *shipSquares) {
