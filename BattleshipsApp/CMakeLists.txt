@@ -6,6 +6,6 @@ project(BattleshipsApp)
 
 include_directories(../BattleshipsLib/include)
 
-add_executable(BattleshipsApp include/Interface.h include/Ship.h include/Ship1.h include/Ship2.h include/Ship3.h include/Ship4.h src/mainApp.cpp src/Interface.cpp src/Ship.cpp src/Ship1.cpp src/Ship2.cpp src/Ship3.cpp src/Ship4.cpp src/User.cpp include/User.h src/Enemy.cpp include/Enemy.h)
+add_executable(BattleshipsApp include/Interface.h include/Ship.h include/Ship1.h include/Ship2.h include/Ship3.h include/Ship4.h src/mainApp.cpp src/Interface.cpp src/Ship.cpp src/Ship1.cpp src/Ship2.cpp src/Ship3.cpp src/Ship4.cpp src/User.cpp include/User.h src/Enemy.cpp include/Enemy.h src/Exception.cpp include/Exception.h)
 
 target_link_libraries(BattleshipsApp BattleshipsLib)

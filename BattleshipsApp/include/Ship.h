@@ -10,9 +10,10 @@ class Ship {
 private:
     //int numOfAliveParts;
     bool isAlive;
+    //std::string *shipSquare;
     //bool isFriendly;
 public:
-    virtual ~Ship() = 0;
+    //virtual ~Ship() = 0;
 
     void setAlive(bool newAlive);
     bool getIsAlive() const;

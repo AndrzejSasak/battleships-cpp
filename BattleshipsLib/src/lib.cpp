@@ -3,6 +3,7 @@
 //
 
 #include "../include/lib.h"
+#include "../../BattleshipsApp/include/Exception.h"
 
 void printWelcomeScreen() {
     std::cout << "Welcome to the Battleships game!" << std::endl;
@@ -93,7 +94,7 @@ void pickAllEnemyShips(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShip
         std::string shipSquare[1];
         shipSquare[0] = line;
         enemyShips1[i]->initShip(shipSquare);
-        for(int i = 0; i < enemyShips1[0]->getLength(); i++)  interf->setTakenByEnemyShip(shipSquare[i], interf);
+        for(int j = 0; j < enemyShips1[0]->getLength(); j++)  interf->setTakenByEnemyShip(shipSquare[j], interf);
     }
     for(int i = 0; i < enemy->getNumOfShips2(); i++) {
         getline(board, line);
@@ -101,7 +102,7 @@ void pickAllEnemyShips(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShip
         shipSquare[0] = std::string(1, line[0]) + std::string(1, line[1]);
         shipSquare[1] = std::string(1, line[2]) + std::string(1, line[3]);
         enemyShips2[i]->initShip(shipSquare);
-        for(int i = 0; i < enemyShips2[0]->getLength(); i++)  interf->setTakenByEnemyShip(shipSquare[i], interf);
+        for(int j = 0; j < enemyShips2[0]->getLength(); j++)  interf->setTakenByEnemyShip(shipSquare[j], interf);
     }
     for(int i = 0; i < enemy->getNumOfShips3(); i++) {
         getline(board, line);
@@ -110,7 +111,7 @@ void pickAllEnemyShips(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShip
         shipSquare[1] = std::string(1, line[2]) + std::string(1, line[3]);
         shipSquare[2] = std::string(1, line[4]) + std::string(1, line[5]);
         enemyShips3[i]->initShip(shipSquare);
-        for(int i = 0; i < enemyShips3[0]->getLength(); i++)  interf->setTakenByEnemyShip(shipSquare[i], interf);
+        for(int j = 0; j < enemyShips3[0]->getLength(); j++)  interf->setTakenByEnemyShip(shipSquare[j], interf);
     }
     for(int i = 0; i < enemy->getNumOfShips4(); i++) {
         getline(board, line);
@@ -120,7 +121,7 @@ void pickAllEnemyShips(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShip
         shipSquare[2] = std::string(1, line[4]) + std::string(1, line[5]);
         shipSquare[3] = std::string(1, line[6]) + std::string(1, line[7]);
         enemyShips4[i]->initShip(shipSquare);
-        for(int i = 0; i < enemyShips4[0]->getLength(); i++)  interf->setTakenByEnemyShip(shipSquare[i], interf);
+        for(int j = 0; j < enemyShips4[0]->getLength(); j++)  interf->setTakenByEnemyShip(shipSquare[j], interf);
     }
     board.close();
 }
@@ -156,37 +157,44 @@ int pickUserShip(Interface *interf, Ship *userShip) {
     std::cout << "Please pick the squares for your ship of length " << length << ":" << std::endl;
     int squareIndex[length];
     for(int i = 0; i < length; i++) {
+
         std::cin >> shipSquares[i];
+
+        //checking if is input is in form of 2 char squares for example: A1, B5, J9 etc
+        int value = (int)shipSquares[i].at(0);
+        if(shipSquares[i].length() != 2 || value < 65 || value > 74 || (int)shipSquares[i].at(1) - 48 < 0 || (int)shipSquares[i].at(1) - 48 > 9) {
+            throw Exception("square not assigned properly", 1);
+        }
 
         //checking if the ship squares are next to each other
         squareIndex[i] = parseSquareInputToIndex(shipSquares[i]);
         if((squareIndex[i] != (squareIndex[i-1] - 10) && squareIndex[i] != (squareIndex[i-1]  + 10) && squareIndex[i] != (squareIndex[i-1] - 1) && squareIndex[i] != (squareIndex[i-1]+ 1)) && i > 0) {
-            std::cout << "The chosen square is not next to a previous square. Please pick other squares." << std::endl;
-            return -1;
+            throw Exception("squares not assigned properly", 2);
         }
     }
 
-    //checking if one of the squares on input is already  taken by a ship or surrounding a ship
+    //checking if one of the squares on input is already taken by a ship or surrounding a ship
     for(int i = 0; i < length; i++) {
         if (interf->isTakenByShip(shipSquares[i], interf) == 1) {
-            std::cout << "One of the squares is already taken by a ship or its surroundings." << std::endl;
-            return -1;
+            throw Exception("squares not assigned properly", 3);
         }
     }
+
     //checking if there are duplicate squares on input
     if(length > 1) {
         std::string *end = shipSquares + length;
         std::sort(shipSquares, end);
         bool containsDuplicates = (std::unique(shipSquares, end) != end);
         if (containsDuplicates == 1) {
-            std::cout << "Entered input cannot contain duplicates." << std::endl;
-            return -1;
+            throw Exception("squares not assigned properly", 4);
         }
     }
 
+    //assiging interface squares as taken
     for (int i = 0; i < length; i++) {
         interf->setTakenByUserShip(shipSquares[i], interf);
     }
+    //initializing a user ship
     userShip->initShip(shipSquares);
 
     return 0;
@@ -319,7 +327,23 @@ int checkIfSquareWasAlreadyShot(std::string &guessSquare, T *playerShotAt) {
 int userShoot(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Ship* enemyShips4[], Interface *interf, User *user, Enemy *playerShotAt) {
     std::string guessSquare;
     std::cout << "Shoot at a square: " << std::endl;
-    std::cin >> guessSquare;
+
+
+    //example of catching errors
+    try {
+        std::cin >> guessSquare;
+        int value = (int)guessSquare[0];
+        if(guessSquare.length() != 2 || value < 65 || value > 74 || (int)guessSquare[1] - 48 < 0 || (int)guessSquare[1] - 48 > 9) {
+            throw "input error";
+        }
+    } catch (const std::invalid_argument& e) {
+        std::cout << "Invalid argument failed: " << e.what() << std::endl;
+        userShoot(enemyShips1, enemyShips2, enemyShips3,enemyShips4, interf, user,playerShotAt);
+    } catch (...) {
+        std::cout << "default catch block" << std::endl;
+    }
+
+
     //guessSquare = "A0";
 
     int wasShot = checkIfSquareWasAlreadyShot(guessSquare, user);

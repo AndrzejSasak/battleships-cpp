@@ -17,7 +17,7 @@ private:
 
 public:
     Ship2();
-    ~Ship2() override;
+    ~Ship2(); //override;
 
     void initShip(std::string *shipSquares) override;
     std::string* getShipSquares() override;

@@ -3,12 +3,13 @@
 //
 
 #include <iostream>
-#include "../include/Ship4.h"
-#include "../include/Ship3.h"
-#include "../include/Ship2.h"
-#include "../include/Ship1.h"
+//#include "../include/Ship4.h"
+//#include "../include/Ship3.h"
+//#include "../include/Ship2.h"
+//#include "../include/Ship1.h"
 #include <ctime>
 #include <lib.h>
+#include "../include/Exception.h"
 
 
 int main(int argc, char *argv[]) {
@@ -51,7 +52,20 @@ int main(int argc, char *argv[]) {
 
     interf.printInterface();
 
-    pickAllUserShips(userShips1, userShips2, userShips3, userShips4, &user, &interf);
+    try {
+        pickAllUserShips(userShips1, userShips2, userShips3, userShips4, &user, &interf);
+    } catch (Exception &e) {
+        std::cout << e.what() << std::endl;
+        exit(1);
+    } catch (...) {
+        std::cout << "ERROR HAPPENED!" << std::endl;
+        exit(100);
+    }
+
+
+
+
+
     pickAllEnemyShips(enemyShips1, enemyShips2, enemyShips3, enemyShips4, &enemy, &interf);
     interf.printInterface();
 
