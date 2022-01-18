@@ -15,9 +15,7 @@ private:
 
 public:
     Interface();
-    //~Interface();
 
-    //prints the interface
     void printInterface();
 
     void setTakenByUserShip(std::string newSquare, Interface* interf);
@@ -29,6 +27,7 @@ public:
     void setAlreadyShotEnemySquare(std::string newSquare, Interface *interf);
     void setDestroyedUserShipWhole(std::string newSquare, Interface* interf);
     void setDestroyedEnemyShipWhole(std::string newSquare, Interface* interf);
+    void resetUserArea();
 
 
 };

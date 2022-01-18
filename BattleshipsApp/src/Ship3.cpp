@@ -7,7 +7,6 @@
 Ship3::Ship3() {
     numOfAliveParts = length;
     setAlive(true);
-    //new allocation
     shipSquare = new std::string[numOfAliveParts];
 }
 

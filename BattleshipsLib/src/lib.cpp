@@ -16,7 +16,7 @@ void selectUser(char *argv1, char *argv2, std::fstream *usersFile) {
 
     usersFile->open("../../BattleshipsApp/users_database/users.txt", std::ios::in);
     if(!usersFile->is_open()) {
-        std::cout << "ERROR OPENING FILE TO READ" << std::endl;
+        throw Exception("cannot open file", 6);
     }
     std::ifstream usersIn("../../BattleshipsApp/users_database/users.txt");
 
@@ -37,13 +37,20 @@ void selectUser(char *argv1, char *argv2, std::fstream *usersFile) {
         std::cout << "Entered name is new in the database. Welcome new user!" << std::endl;
     }
     usersFile->close();
+    if(usersFile->is_open()) {
+        throw Exception("cannot close file", 7);
+    }
 
     addNewUserToDatabase(name, password, &map);
 
     std::ofstream usersOut("../../BattleshipsApp/users_database/users.txt");
+
     saveUsersToDatabase(&usersOut, &map);
 
     usersOut.close();
+    if(usersOut.is_open()) {
+        throw Exception("cannot close file", 7);
+    }
 }
 
 void saveUsersToDatabase(std::ofstream *usersOut, std::map<std::string, std::string> *map) {
@@ -51,8 +58,7 @@ void saveUsersToDatabase(std::ofstream *usersOut, std::map<std::string, std::str
     usersFile.open("../../BattleshipsApp/users_database/users.txt", std::ios::out);
 
     if(!usersOut->is_open()) {
-        std::cout << "FILE IS CLOSED" << std::endl;
-        return;
+        throw Exception("file is not open", 6);
     }
 
     for(auto &pair: *map) {
@@ -78,15 +84,19 @@ void addNewUserToDatabase(std::string name, std::string password, std::map<std::
 
 void pickAllEnemyShips(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Ship *enemyShips4[], Enemy *enemy, Interface *interf) {
     std::fstream fboard;
+
+    //choosing a board from a file
     int boardNumber = rand() % 2 + 1;
     std::string boardNumberStr = std::to_string(boardNumber);
     std::string boardFilepath = "../../BattleshipsApp/boards/board" + boardNumberStr + ".txt";
     std::cout << "Board chosen: " << boardFilepath << std::endl;
+
     fboard.open(boardFilepath, std::ios::in);
     if(!fboard.is_open()) {
-        std::cout << "ERROR OPENING FILE" << std::endl;
+        throw Exception("board file is not open", 6);
     }
 
+    //reading ship squares individually from a previously chosen board
     std::ifstream board(boardFilepath);
     std::string line;
     for(int i = 0; i < enemy->getNumOfShips1(); i++) {
@@ -124,32 +134,23 @@ void pickAllEnemyShips(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShip
         for(int j = 0; j < enemyShips4[0]->getLength(); j++)  interf->setTakenByEnemyShip(shipSquare[j], interf);
     }
     board.close();
+    if(board.is_open()) {
+        throw Exception("board file is open", 7);
+    }
 }
 
 void pickAllUserShips(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship *userShips4[], User *user, Interface *interf) {
-    for(int i = 0; i < user->getNumOfShips1(); i++) {
-        if(pickUserShip(interf, userShips1[i])== -1) {
-            i--;
-        }
-    }
-    for(int i = 0; i < user->getNumOfShips2(); i++) {
-        if(pickUserShip(interf, userShips2[i])== -1) {
-            i--;
-        }
-    }
-    for(int i = 0; i < user->getNumOfShips3(); i++) {
-        if(pickUserShip(interf, userShips3[i])== -1) {
-            i--;
-        }
-    }
-    for(int i = 0; i < user->getNumOfShips4(); i++) {
-        if (pickUserShip(interf, userShips4[i]) == -1) {
-            i--;
-        }
-    }
+    //picking ships of length 1
+    for(int i = 0; i < user->getNumOfShips1(); i++) pickUserShip(interf, userShips1[i]);
+    //picking ships of length 2
+    for(int i = 0; i < user->getNumOfShips2(); i++) pickUserShip(interf, userShips2[i]);
+    //picking ships of length 3
+    for(int i = 0; i < user->getNumOfShips3(); i++) pickUserShip(interf, userShips2[i]);
+    //picking ships of length 4
+    for(int i = 0; i < user->getNumOfShips4(); i++) pickUserShip(interf, userShips2[i]);
 }
 
-int pickUserShip(Interface *interf, Ship *userShip) {
+void pickUserShip(Interface *interf, Ship *userShip) {
     int length = userShip->getLength();
 
     std::string shipSquares[length];
@@ -169,7 +170,7 @@ int pickUserShip(Interface *interf, Ship *userShip) {
         //checking if the ship squares are next to each other
         squareIndex[i] = parseSquareInputToIndex(shipSquares[i]);
         if((squareIndex[i] != (squareIndex[i-1] - 10) && squareIndex[i] != (squareIndex[i-1]  + 10) && squareIndex[i] != (squareIndex[i-1] - 1) && squareIndex[i] != (squareIndex[i-1]+ 1)) && i > 0) {
-            throw Exception("squares not assigned properly", 2);
+            throw Exception("squares not assigned properly",2);
         }
     }
 
@@ -190,14 +191,13 @@ int pickUserShip(Interface *interf, Ship *userShip) {
         }
     }
 
-    //assiging interface squares as taken
+    //assigning interface squares as taken
     for (int i = 0; i < length; i++) {
         interf->setTakenByUserShip(shipSquares[i], interf);
     }
     //initializing a user ship
     userShip->initShip(shipSquares);
 
-    return 0;
 }
 
 int checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfEnemy, Interface *interf, User *playerShotAt) {
@@ -207,6 +207,7 @@ int checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfEnemy, Interf
     if(lengthOfShip == 2)  numOfShips = playerShotAt->getNumOfShips2();
     if(lengthOfShip == 3)  numOfShips = playerShotAt->getNumOfShips3();
     if(lengthOfShip == 4)  numOfShips = playerShotAt->getNumOfShips4();
+    //checking through ships of length 1
     if(lengthOfShip == 1) {
         for (int i = 0; i < numOfShips; i++) {
             for (int j = 0; j < lengthOfShip; j++) {
@@ -220,7 +221,7 @@ int checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfEnemy, Interf
                 }
             }
         }
-    } else {
+    } else { //checking through ships of length 2, 3 and 4
         for (int i = 0; i < numOfShips; i++) {
             for (int j = 0; j < lengthOfShip; j++) {
                 if (ships[i]->getShipSquares()[j] == guessSquareOfEnemy) {
@@ -279,6 +280,7 @@ int checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfUser, Interfa
             }
         }
     } else {
+        //running through every square of every ship and checking if it is the same as the guess square
         for(int i = 0; i < numOfShips; i++) {
             for(int j = 0; j < lengthOfShip; j++) {
                 if(ships[i]->getShipSquares()[j] == guessSquareOfUser) {
@@ -315,7 +317,6 @@ int checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfUser, Interfa
 //templates
 template <typename T>
 int checkIfSquareWasAlreadyShot(std::string &guessSquare, T *playerShotAt) {
-    std::cout << "CHECKING!" << std::endl;
     for(int i = 0; i < playerShotAt->getNumOfShots(); i++) {
         if(playerShotAt->getShotSquare(i) == guessSquare) {
             return -1;
@@ -328,23 +329,15 @@ int userShoot(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Shi
     std::string guessSquare;
     std::cout << "Shoot at a square: " << std::endl;
 
-
     //example of catching errors
-    try {
-        std::cin >> guessSquare;
-        int value = (int)guessSquare[0];
-        if(guessSquare.length() != 2 || value < 65 || value > 74 || (int)guessSquare[1] - 48 < 0 || (int)guessSquare[1] - 48 > 9) {
-            throw "input error";
-        }
-    } catch (const std::invalid_argument& e) {
-        std::cout << "Invalid argument failed: " << e.what() << std::endl;
-        userShoot(enemyShips1, enemyShips2, enemyShips3,enemyShips4, interf, user,playerShotAt);
-    } catch (...) {
-        std::cout << "default catch block" << std::endl;
+    std::cin >> guessSquare;
+    if(guessSquare.length() != 2) {
+        throw Exception("could not interpret input properly", 1);
+    } else if ((int)guessSquare[0] < 65 || (int)guessSquare[0] > 74) {
+        throw Exception("could not interpret input properly", 1);
+    } else if ( (int)guessSquare[1] - 48 < 0 || (int)guessSquare[1] - 48 > 9) {
+        throw Exception("could not interpret input properly", 1);
     }
-
-
-    //guessSquare = "A0";
 
     int wasShot = checkIfSquareWasAlreadyShot(guessSquare, user);
     while(wasShot != 0) {
@@ -382,16 +375,6 @@ int userShoot(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Shi
 
 int enemyShoot(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship *userShips4[], Interface *interf, Enemy *enemy, User *playerShotAt) {
 
-    /*
-    int length1 = userShips1[0]->getLength();
-    int length2 = userShips2[0]->getLength();
-    int length3 = userShips3[0]->getLength();
-    int length4 = userShips4[0]->getLength();
-    int numOfShips1 = 4;
-    int numOfShips2 = 3;
-    int numOfShips3 = 2;
-    int numOfShips4 = 1;
-    */
     std::string guessSquare;
 
     chooseSquare(guessSquare);
@@ -402,13 +385,11 @@ int enemyShoot(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship 
         wasShot = checkIfSquareWasAlreadyShot(guessSquare, enemy);
     }
 
-
     enemy->setShotSquare(enemy->getNumOfShots(), guessSquare);
     enemy->setNumOfShots(enemy->getNumOfShots() + 1);
     std::cout << "NUM OF SHOTS: " << enemy->getNumOfShots() << std::endl;
 
     std::cout << "Enemy is shooting at square " << guessSquare << "..." << std::endl;
-    //Sleep(1000);
 
     int status[4] = {0, 0, 0, 0};
     status[0] = checkIfGuessWasCorrect(userShips1, guessSquare, interf, playerShotAt);
@@ -430,10 +411,6 @@ int enemyShoot(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship 
         return status[0];
     }
 
-    std::cout << "Enemy missed!" << std::endl;
-    interf->setAlreadyShotUserSquare(guessSquare, interf);
-
-    return 0;
 }
 
 void chooseSquare( std::string &guessSquare) {
@@ -445,30 +422,6 @@ void chooseSquare( std::string &guessSquare) {
 }
 
 
-//overloaded functions
-//templates
-/*
-template <typename T>
-int checkIfSquareWasAlreadyShot(std::string &guessSquare, T *playerShotAt) {
-    std::cout << "CHECKING!" << std::endl;
-    for(int i = 0; i < playerShotAt->getNumOfShots(); i++) {
-        if(playerShotAt->getShotSquare(i) == guessSquare) {
-            return -1;
-        }
-    }
-    return 0;
-}
- */
-/*
-int checkIfSquareWasAlreadyShot(std::string &guessSquare, User *user) {
-    for(int i = 0; i < user->getNumOfShots(); i++) {
-        if(user->getShotSquare(i) == guessSquare) {
-            return -1;
-        }
-    }
-    return 0;
-}
-*/
 int parseSquareInputToIndex(std::string square) {
     int squareIndex = 0;
 

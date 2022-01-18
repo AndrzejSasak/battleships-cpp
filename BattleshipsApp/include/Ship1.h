@@ -10,14 +10,12 @@ class Ship1 : public Ship {
 private:
     const int length = 1;
     int numOfAliveParts;
-    //std::string shipSquare[1];
-    //new allocation
     std::string *shipSquare;
 
 public:
 
     Ship1();
-    ~Ship1(); //override;
+    ~Ship1() override;
 
     void initShip(std::string *shipSquares) override;
     std::string* getShipSquares() override;

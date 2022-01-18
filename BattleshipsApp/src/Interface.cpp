@@ -206,3 +206,9 @@ void Interface::setAlreadyShotEnemySquare(std::string newSquare, Interface *inte
     int squareIndex = parseSquareInputToIndex(newSquare);
     interf->enemyArea[squareIndex] = ALREADYSHOTSQUARE;
 }
+
+void Interface::resetUserArea() {
+    for(int i = 0; i < 100; ++i) {
+        userArea[i] = FREESQUARE;
+    }
+}

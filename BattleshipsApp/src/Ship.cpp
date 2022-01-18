@@ -11,12 +11,3 @@ void Ship::setAlive(bool newIsAlive) {
 bool Ship::getIsAlive() const {
     return isAlive;
 }
-/*
-bool Ship::getFriendly() const {
-    return isFriendly;
-}
-
-void Ship::setFriendly(bool newIsFriendly) {
-    isFriendly = newIsFriendly;
-}
-*/
