@@ -199,13 +199,65 @@ void pickAllEnemyShips(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShip
 
 void pickAllUserShips(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship *userShips4[], User *user, Interface *interf) {
     //picking ships of length 1
-    for(int i = 0; i < user->getNumOfShips1(); i++) pickUserShip(interf, userShips1[i]);
+    for(int i = 0; i < user->getNumOfShips1(); i++) {
+        bool isError = true;
+        while(isError) {
+            try {
+                pickUserShip(interf, userShips1[i]);
+                isError = false;
+            } catch (Exception &e) {
+                std::cout << e.what() << std::endl;
+            } catch(...) {
+                std::cout << "ERROR HAPPENED! PICK SHIP AGAIN: " << std::endl;
+                isError = true;
+            }
+        }
+    }
     //picking ships of length 2
-    for(int i = 0; i < user->getNumOfShips2(); i++) pickUserShip(interf, userShips2[i]);
+    for(int i = 0; i < user->getNumOfShips2(); i++) {
+        bool isError = true;
+        while(isError) {
+            try {
+                pickUserShip(interf, userShips2[i]);
+                isError = false;
+            } catch (Exception &e) {
+                std::cout << e.what() << std::endl;
+            } catch(...) {
+                std::cout << "ERROR HAPPENED! PICK SHIP AGAIN: " << std::endl;
+                isError = true;
+            }
+        }
+    }
     //picking ships of length 3
-    for(int i = 0; i < user->getNumOfShips3(); i++) pickUserShip(interf, userShips3[i]);
+    for(int i = 0; i < user->getNumOfShips3(); i++) {
+        bool isError = true;
+        while(isError) {
+            try {
+                pickUserShip(interf, userShips3[i]);
+                isError = false;
+            } catch (Exception &e) {
+                std::cout << e.what() << std::endl;
+            } catch(...) {
+                std::cout << "ERROR HAPPENED! PICK SHIP AGAIN: " << std::endl;
+                isError = true;
+            }
+        }
+    }
     //picking ships of length 4
-    for(int i = 0; i < user->getNumOfShips4(); i++) pickUserShip(interf, userShips4[i]);
+    for(int i = 0; i < user->getNumOfShips4(); i++) {
+        bool isError = true;
+        while(isError) {
+            try {
+                pickUserShip(interf, userShips4[i]);
+                isError = false;
+            } catch (Exception &e) {
+                std::cout << e.what() << std::endl;
+            } catch(...) {
+                std::cout << "ERROR HAPPENED! PICK SHIP AGAIN: " << std::endl;
+                isError = true;
+            }
+        }
+    }
 }
 
 void pickUserShip(Interface *interf, Ship *userShip) {
@@ -218,8 +270,9 @@ void pickUserShip(Interface *interf, Ship *userShip) {
     for(int i = 0; i < length; i++) {
 
         std::cin >> shipSquares[i];
-        std::cout << "VALUE 1 = " << shipSquares[i-1].at(1) << std::endl;
-        std::cout << "VALUE 2 = " << shipSquares[i].at(1) << std::endl;
+        shipSquares[i].at(0) = toupper(shipSquares[i].at(0));
+        //std::cout << "VALUE 1 = " << shipSquares[i-1].at(1) << std::endl;
+        //std::cout << "VALUE 2 = " << shipSquares[i].at(1) << std::endl;
 
         //checking if is input is in form of 2 char squares for example: A1, B5, J9 etc
         if(shipSquares[i].length() != 2) {
@@ -230,9 +283,9 @@ void pickUserShip(Interface *interf, Ship *userShip) {
             throw Exception("square not assigned properly", 1);
         }
 
-        //checking if the ship squares are next to each other //TO BE FIXED
+        //checking if the ship squares are next to each other
         squareIndex[i] = parseSquareInputToIndex(shipSquares[i]);
-        if(i > 0 && (squareIndex[i] != (squareIndex[i-1] - 10) && squareIndex[i] != (squareIndex[i-1]  + 10) && squareIndex[i] != (squareIndex[i-1] - 1) && squareIndex[i] != (squareIndex[i-1]+ 1))) {
+        if(i > 0 && (squareIndex[i] != (squareIndex[i-1] - 10) && squareIndex[i] != (squareIndex[i-1] + 10) && squareIndex[i] != (squareIndex[i-1] - 1) && squareIndex[i] != (squareIndex[i-1]+ 1))) {
             throw Exception("squares not assigned properly",2);
         } else if (i > 0 && shipSquares[i-1].at(1) == '9' && shipSquares[i].at(1) == '0') {
             throw Exception("squares not assigned properly",2);
@@ -262,7 +315,7 @@ void pickUserShip(Interface *interf, Ship *userShip) {
     }
     //initializing a user ship
     userShip->initShip(shipSquares);
-
+    interf->printInterface();
 }
 
 bool checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfEnemy, Interface *interf, User *playerShotAt) {
@@ -290,7 +343,7 @@ bool checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfEnemy, Inter
                 if (ships[i]->getShipSquares()[j] == guessSquareOfEnemy) {
                     std::cout << "Enemy guessed correctly: " << guessSquareOfEnemy
                     << " and destroyed this part of your ship!" << std::endl;
-                    int numOfAliveParts = playerShotAt->getNumOfAliveShipPts();
+                    int numOfAliveParts = ships[i]->getNumOfAliveParts();
                     if (numOfAliveParts > 0) {
                         numOfAliveParts--;
                         ships[i]->setNumOfAliveParts(numOfAliveParts);
@@ -322,6 +375,7 @@ bool checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfUser, Interf
     if(lengthOfShip == 2)  numOfShips = playerShotAt->getNumOfShips2();
     if(lengthOfShip == 3)  numOfShips = playerShotAt->getNumOfShips3();
     if(lengthOfShip == 4)  numOfShips = playerShotAt->getNumOfShips4();
+    //checking through ships of length 1
     if(lengthOfShip == 1) {
         for(int i = 0; i < numOfShips; i++) {
             for(int j = 0; j < lengthOfShip; j++) {
@@ -379,6 +433,7 @@ int userShoot(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Shi
 
     //example of catching errors
     std::cin >> guessSquare;
+    guessSquare.at(0) = toupper(guessSquare.at(0));
     if(guessSquare.length() != 2) {
         throw Exception("could not interpret input properly", 1);
     } else if ((int)guessSquare[0] < 65 || (int)guessSquare[0] > 74) {
@@ -391,6 +446,7 @@ int userShoot(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Shi
     while(wasShot != 0) {
         std::cout <<  "You have already shot at this square! Please shoot another square: " << std::endl;
         std::cin >> guessSquare;
+        guessSquare.at(0) = toupper(guessSquare.at(0));
         if(guessSquare.length() != 2) {
             throw Exception("could not interpret input properly", 1);
         } else if ((int)guessSquare[0] < 65 || (int)guessSquare[0] > 74) {
@@ -424,7 +480,6 @@ int userShoot(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Shi
         return status[0];
     }
 
-    return -1;
 }
 
 
@@ -446,7 +501,7 @@ int enemyShoot(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship 
 
     //std::cout << "Enemy is shooting at square " << guessSquare << "..." << std::endl;
 
-    int status[4] = {0, 0, 0, 0};
+    bool status[4] = {false, false, false, false};
     status[0] = checkIfGuessWasCorrect(userShips1, guessSquare, interf, playerShotAt);
     status[1] = checkIfGuessWasCorrect(userShips2, guessSquare, interf, playerShotAt);
     status[2] = checkIfGuessWasCorrect(userShips3, guessSquare, interf, playerShotAt);

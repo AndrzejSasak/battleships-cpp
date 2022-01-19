@@ -63,6 +63,9 @@ int main(int argc, char *argv[]) {
 
     bool isError;
     isError = true;
+
+    pickAllUserShips(userShips1, userShips2, userShips3, userShips4, &user, &interf);
+    /*
     while(isError) {
         try {
             pickAllUserShips(userShips1, userShips2, userShips3, userShips4, &user, &interf);
@@ -78,7 +81,7 @@ int main(int argc, char *argv[]) {
             isError = true;
         }
     }
-
+    */
     try {
         pickAllEnemyShips(enemyShips1, enemyShips2, enemyShips3, enemyShips4, &enemy, &interf);
     } catch (Exception &e) {
@@ -162,12 +165,12 @@ int main(int argc, char *argv[]) {
             }
         }
         std::cout << "NUMBER OF YOUR ALIVE SHIPS: " << getNumOfAliveShips(userShips1, userShips2, userShips3, userShips4, &user) << std::endl;
-        std::cout << "NUMBER OF ENEMY ALIVE SHIPS: " << getNumOfAliveShips(userShips1, enemyShips2, enemyShips3, enemyShips4, &enemy) << std::endl;
+        std::cout << "NUMBER OF ENEMY ALIVE SHIPS: " << getNumOfAliveShips(enemyShips1, enemyShips2, enemyShips3, enemyShips4, &enemy) << std::endl;
         interf.printInterface();
     }
 
     deallocateEnemyShipsMemory(&enemy, enemyShips1, enemyShips2, enemyShips3, enemyShips4);
     deallocateUserShipsMemory(&user, userShips1, userShips2, userShips3, userShips4);
-
+    system("pause");
     return 0;
 }
