@@ -57,7 +57,7 @@ void Interface::printInterface()  {
             continue;
         } else if (i%10 == 9) std::cout << std::endl;
     }
-    std::cout << std::endl << std::endl;
+    std::cout << std::endl;
     std::cout << "ENEMY'S AREA" << std::endl;
     std::cout << "  0 1 2 3 4 5 6 7 8 9" << std::endl;
     for(int i = 0; i  < 100; ++i) {

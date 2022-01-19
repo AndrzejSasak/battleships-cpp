@@ -22,6 +22,10 @@
  */
 void printWelcomeScreen();
 
+int getNumOfAliveShips(Ship *ships1[], Ship *ships2[], Ship *ships3[], Ship *ships4[], User *user);
+
+int getNumOfAliveShips(Ship *ships1[], Ship *ships2[], Ship *ships3[], Ship *ships4[], Enemy *enemy);
+
 void pickDifficulty(Enemy *enemy);
 
 /**

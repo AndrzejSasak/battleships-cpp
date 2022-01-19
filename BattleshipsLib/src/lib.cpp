@@ -9,6 +9,41 @@ void printWelcomeScreen() {
     std::cout << "Welcome to the Battleships game!" << std::endl;
 }
 
+int getNumOfAliveShips(Ship *ships1[], Ship *ships2[], Ship *ships3[], Ship *ships4[], User *user) {
+    int numOfAliveShips = 0;
+
+    for(int i = 0; i < user->getNumOfShips1(); i++) {
+        if(ships1[i]->getIsAlive()) numOfAliveShips++;
+    }
+    for(int i = 0; i < user->getNumOfShips2(); i++) {
+        if(ships2[i]->getIsAlive()) numOfAliveShips++;
+    }
+    for(int i = 0; i < user->getNumOfShips3(); i++) {
+        if(ships3[i]->getIsAlive()) numOfAliveShips++;
+    }
+    for(int i = 0; i < user->getNumOfShips4(); i++) {
+        if(ships4[i]->getIsAlive()) numOfAliveShips++;
+    }
+    return numOfAliveShips;
+}
+
+int getNumOfAliveShips(Ship *ships1[], Ship *ships2[], Ship *ships3[], Ship *ships4[], Enemy *enemy) {
+    int numOfAliveShips = 0;
+
+    for(int i = 0; i < enemy->getNumOfShips1(); i++) {
+        if(ships1[i]->getIsAlive()) numOfAliveShips++;
+    }
+    for(int i = 0; i < enemy->getNumOfShips2(); i++) {
+        if(ships2[i]->getIsAlive()) numOfAliveShips++;
+    }
+    for(int i = 0; i < enemy->getNumOfShips3(); i++) {
+        if(ships3[i]->getIsAlive()) numOfAliveShips++;
+    }
+    for(int i = 0; i < enemy->getNumOfShips4(); i++) {
+        if(ships4[i]->getIsAlive()) numOfAliveShips++;
+    }
+    return numOfAliveShips;
+}
 
 void pickDifficulty(Enemy *enemy) {
     std::cout << "Please pick the difficulty of the enemy (1 for easy, 2 for medium, 3 for hard):" << std::endl;
@@ -369,6 +404,13 @@ int userShoot(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Shi
     while(wasShot != 0) {
         std::cout <<  "You have already shot at this square! Please shoot another square: " << std::endl;
         std::cin >> guessSquare;
+        if(guessSquare.length() != 2) {
+            throw Exception("could not interpret input properly", 1);
+        } else if ((int)guessSquare[0] < 65 || (int)guessSquare[0] > 74) {
+            throw Exception("could not interpret input properly", 1);
+        } else if ( (int)guessSquare[1] - 48 < 0 || (int)guessSquare[1] - 48 > 9) {
+            throw Exception("could not interpret input properly", 1);
+        }
         wasShot = checkIfSquareWasAlreadyShot(guessSquare, user);
     }
 
@@ -413,9 +455,9 @@ int enemyShoot(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship 
 
     enemy->setShotSquare(enemy->getNumOfShots(), guessSquare);
     enemy->setNumOfShots(enemy->getNumOfShots() + 1);
-    std::cout << "NUM OF SHOTS: " << enemy->getNumOfShots() << std::endl;
+    //std::cout << "NUM OF SHOTS: " << enemy->getNumOfShots() << std::endl;
 
-    std::cout << "Enemy is shooting at square " << guessSquare << "..." << std::endl;
+    //std::cout << "Enemy is shooting at square " << guessSquare << "..." << std::endl;
 
     int status[4] = {0, 0, 0, 0};
     status[0] = checkIfGuessWasCorrect(userShips1, guessSquare, interf, playerShotAt);

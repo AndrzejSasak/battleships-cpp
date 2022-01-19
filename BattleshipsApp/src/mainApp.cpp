@@ -11,6 +11,7 @@
 #include <lib.h>
 #include "../include/Exception.h"
 
+
 int main(int argc, char *argv[]) {
     srand(time(nullptr));
 
@@ -95,7 +96,7 @@ int main(int argc, char *argv[]) {
     //game loop
     bool gameIsUndecided = true;
     while(gameIsUndecided) {
-
+    //user turn
         int wasEnemyHit;
         isError = true;
         while(isError) {
@@ -113,6 +114,7 @@ int main(int argc, char *argv[]) {
                 isError = true;
             }
         }
+
 
         interf.printInterface();
         while(wasEnemyHit) {
@@ -145,13 +147,14 @@ int main(int argc, char *argv[]) {
         }
         if(!gameIsUndecided) break;
 
+        //enemy turn
         //difficulty is either 1, 2 or 3 and that corresponds to the number of shots the enemy takes
         for(int i = 0; i < enemy.getDifficulty(); i++) {
             int wasUserHit = enemyShoot(userShips1, userShips2, userShips3, userShips4, &interf, &enemy, &user);
             if(wasUserHit) {
                 //decrementing number of user's ship parts;
                 --user;  //user.setNumOfAliveShipPts(user.getNumOfAliveShipPts() - wasUserHit);
-                   std::cout << "ALIVE PTS: " << user.getNumOfAliveShipPts() << std::endl;
+                  // std::cout << "ALIVE PTS: " << user.getNumOfAliveShipPts() << std::endl;
                     if(user.getNumOfAliveShipPts() == 0) {
                         std::cout << "Enemy has destroyed all your ships and won the game! You lost!" << std::endl;
                         gameIsUndecided = false;
@@ -159,7 +162,8 @@ int main(int argc, char *argv[]) {
                     }
             }
         }
-
+        std::cout << "NUMBER OF YOUR ALIVE SHIPS: " << getNumOfAliveShips(userShips1, userShips2, userShips3, userShips4, &user) << std::endl;
+        std::cout << "NUMBER OF ENEMY ALIVE SHIPS: " << getNumOfAliveShips(userShips1, enemyShips2, enemyShips3, enemyShips4, &enemy) << std::endl;
         interf.printInterface();
     }
 
