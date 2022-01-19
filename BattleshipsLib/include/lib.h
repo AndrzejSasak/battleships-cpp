@@ -8,7 +8,6 @@
 #include <map>
 #include <algorithm>
 #include <fstream>
-//#include <windows.h>
 #include "../../BattleshipsApp/include/Ship.h"
 #include "../../BattleshipsApp/include/Ship1.h"
 #include "../../BattleshipsApp/include/Ship2.h"
@@ -23,8 +22,11 @@
  */
 void printWelcomeScreen();
 
+void pickDifficulty(Enemy *enemy);
+
 /**
- *
+ * this function is used for reading all users and their corresponding passwords from a database into a map container and
+ * checking if the entered user exists in the database.
  * @param argv1 username
  * @param argv2 password
  * @param usersFile database of users to which users will be saved and from which users will be read
@@ -32,14 +34,14 @@ void printWelcomeScreen();
 void selectUser(char *argv1, char *argv2, std::fstream *usersFile);
 
 /**
- *
+ * this function transfers data from a map container to the database output file
  * @param ofstream output stream for saving users to database
  * @param map map which contains all users during the execution of the program
  */
 void saveUsersToDatabase(std::ofstream *ofstream, std::map<std::string, std::string> *map);
 
 /**
- *
+ * this function inserts a new user into a map container with all other users.
  * @param name name of the user
  * @param password password of the user
  * @param map map which contains all users during the execution of the program
@@ -47,7 +49,7 @@ void saveUsersToDatabase(std::ofstream *ofstream, std::map<std::string, std::str
 void addNewUserToDatabase(std::string name, std::string password, std::map<std::string, std::string> *map);
 
 /**
- *
+ * this function reads chooses a board from a file and initializes all enemy ships based on the baord
  * @param enemyShips1 enemy ships of length 1
  * @param enemyShips2 enemy ships of length 2
  * @param enemyShips3 enemy ships of length 3
@@ -58,7 +60,7 @@ void addNewUserToDatabase(std::string name, std::string password, std::map<std::
 void pickAllEnemyShips(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Ship *enemyShips4[], Enemy *enemy, Interface *interf);
 
 /**
- *
+ * this function invokes functions responsible for picking user ships of length 1, 2, 3 and 4
  * @param userShips1 user ships of length 1
  * @param userShips2 user ships of length 2
  * @param userShips3 user ships of length 3
@@ -69,35 +71,118 @@ void pickAllEnemyShips(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShip
 void pickAllUserShips(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship *userShips4[], User *user, Interface *interf);
 
 /**
- *
+ * this function reads ship squares from the standard input and initializes the interface and user ships
+ * based on the input
  * @param interf instance of the interface
  * @param userShip instance of a user ship
  */
 void pickUserShip(Interface *interf, Ship *userShip);
 
 /**
- *
+ * this function translates input squares in form of [A-J][0-9] to a index corresponding to its square
  * @param square square in a form of a string for example A0, A1, A2...
  * @return square index corresponding its square for example 0 for A0, 10 for B0, 99 for J9
  */
 int parseSquareInputToIndex(std::string square);
 
-//przeciazone metody w zaleznosci od tego kto strzela
+//overloaded functions depending on who is shooting
+/**
+ * this function iterates through all ships squares of *ships[] and checks if the guess square of the enemy is
+ * the same as one of the user ship squares
+ * @param ships array of ships
+ * @param guessSquareOfEnemy square guessed by the enemy
+ * @param interf instance of the interface
+ * @param playerShotAt player that is being shot at (user)
+ * @return
+ */
+bool checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfEnemy, Interface *interf, User *playerShotAt);
 
-int checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfEnemy, Interface *interf, User *playerShotAt);
-int checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfUser, Interface *interf, Enemy *playerShotAt);
+/**
+ * this function iterates through all ships of *ships[] and check if the guess square of user is
+ * the same as one the enemy ship squares
+ * @param ships array of ships
+ * @param guessSquareOfUser square guessed by the user
+ * @param interf instance of the interface
+ * @param playerShotAt player that is being shot at (enemy)
+ * @return true if guess was correct, false if guess was not correct
+ */
+bool checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfUser, Interface *interf, Enemy *playerShotAt);
 
+/**
+ * this function reads a user guess square from standard input and checks if the square was already shot
+ * and if the guess is correct
+ * @param enemyShips1 enemy ships of length 1
+ * @param enemyShips2 enemy ships of length 2
+ * @param enemyShips3 enemy ships of length 3
+ * @param enemyShips4 enemy ships of length 4
+ * @param interf instance of the interface
+ * @param user instance of the user player
+ * @param playerShotAt player that is being shot at (enemy)
+ * @return 1 if user hits a target, 0 if user does not hit a target
+ */
 int userShoot(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Ship* enemyShips4[], Interface *interf, User *user, Enemy *playerShotAt);
+
+/**
+ * this function picks a random square to be shot by the enemy, checks if the square was already shot and
+ * determines if the guess is correct
+ * @param userShips1 user ships of length 1
+ * @param userShips2 user ships of length 2
+ * @param userShips3 user ships of length 3
+ * @param userShips4 user ships of length 4
+ * @param interf instance of the interface
+ * @param enemy instance of the enemy player
+ * @param playerShotAt player that is being shot at (user)
+ * @return 1 if enemy hits a target, 0 if enemy does not hit a target
+ */
 int enemyShoot(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship *userShips4[], Interface *interf, Enemy *enemy, User *playerShotAt);
 
+/**
+ * this function picks a random square to be shot by the enemy
+ * @param guessSquare square being chosen by the enemy
+ */
 void chooseSquare( std::string &guessSquare);
 
+/**
+ * thsi function allocates memory for user ships
+ * @param user instance of the user player
+ * @param userShips1 user ships of length 1
+ * @param userShips2 user ships of length 2
+ * @param userShips3 user ships of length 3
+ * @param userShips4 user ships of length 4
+ */
 void allocateUserShipsMemory(User *user, Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship *userShips4[]);
-void allocateEnemyShipsMemory(Enemy *enemy, Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship *userShips4[]);
 
+/**
+ * this function allocates memory for enemy ships
+ * @param enemy instance of the enemy player
+ * @param enemyShips1 enemy ships of length 1
+ * @param enemyShips2 enemy ships of length 2
+ * @param enemyShips3
+ * @param enemyShips4
+ */
+void allocateEnemyShipsMemory(Enemy *enemy, Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Ship *enemyShips4[]);
+
+/**
+ * this function deallocates memory of the user ships
+ * @param user instance of the user player
+ * @param userShips1 user ships of length 1
+ * @param userShips2 user ships of length 2
+ * @param userShips3 user ships of length 3
+ * @param userShips4 user ships of length 4
+ */
 void deallocateUserShipsMemory(User *user, Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship *userShips4[]);
+
+/**
+ *this function deallocates memory of the enemy ships
+ * @param enemy instance of the enemy player
+ * @param enemyShips1 enemy ships of length 1
+ * @param enemyShips2 enemy ships of length 2
+ * @param enemyShips3 enemy ships of length 3
+ * @param enemyShips4 enemy ships of length 4
+ */
 void deallocateEnemyShipsMemory(Enemy *enemy, Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Ship *enemyShips4[]);
-//szablony
-//int checkIfSquareWasAlreadyShot(std::string &guessSquare, User *user);
+
+//template in .cpp
+//int checkIfSquareWasAlreadyShot(std::string &guessSquare, T *playerShotAt);
 
 #endif //JIPP2_LIB_H

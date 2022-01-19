@@ -11,9 +11,13 @@
 #include <lib.h>
 #include "../include/Exception.h"
 
-
 int main(int argc, char *argv[]) {
     srand(time(nullptr));
+
+    Interface interf;
+    Enemy enemy(4,3,2,1, 20);
+    User user(4, 3, 2, 1, 20);
+    int difficulty;
 
     std::fstream usersFile("../../BattleshipsApp/users_database/users.txt");
     if(argc == 3) {
@@ -30,21 +34,15 @@ int main(int argc, char *argv[]) {
 
     printWelcomeScreen();
 
-    Interface interf;
-    Enemy enemy;
-    User user;
 
-    enemy.setNumOfShips1(4);
-    enemy.setNumOfShips2(3);
-    enemy.setNumOfShips3(2);
-    enemy.setNumOfShips4(1);
-    enemy.setNumOfAliveShipPts(20);
-
-    user.setNumOfShips1(4);
-    user.setNumOfShips2(3);
-    user.setNumOfShips3(2);
-    user.setNumOfShips4(1);
-    user.setNumOfAliveShipPts(20);
+    try {
+        pickDifficulty(&enemy);
+    } catch (Exception &e) {
+        std::cout << e.what() << std::endl;
+        exit(-1);
+    } catch (...) {
+        std::cout << "ERROR HAPPENED!" << std::endl;
+    }
 
     //initialize memory for enemy ships
     Ship *userShips1[user.getNumOfShips1()];
@@ -62,7 +60,8 @@ int main(int argc, char *argv[]) {
 
     interf.printInterface();
 
-    bool isError = true;
+    bool isError;
+    isError = true;
     while(isError) {
         try {
             pickAllUserShips(userShips1, userShips2, userShips3, userShips4, &user, &interf);
@@ -146,8 +145,8 @@ int main(int argc, char *argv[]) {
         }
         if(!gameIsUndecided) break;
 
-        //3 is number of shots the enemy takes
-        for(int i = 0; i < 3; i++) {
+        //difficulty is either 1, 2 or 3 and that corresponds to the number of shots the enemy takes
+        for(int i = 0; i < enemy.getDifficulty(); i++) {
             int wasUserHit = enemyShoot(userShips1, userShips2, userShips3, userShips4, &interf, &enemy, &user);
             if(wasUserHit) {
                 //decrementing number of user's ship parts;

@@ -4,6 +4,14 @@
 
 #include "../include/User.h"
 
+User::User(int numOfShips1, int numOfShips2, int numOfShips3, int numOfShips4, int numOfAliveShipPts):
+        numOfShips1(numOfShips1),
+        numOfShips2(numOfShips2),
+        numOfShips3(numOfShips3),
+        numOfShips4(numOfShips4),
+        numOfAliveShipPts(numOfAliveShipPts)
+{}
+
 void User::setNumOfShips1(int num) {
     numOfShips1 = num;
 }
@@ -44,12 +52,12 @@ int User::getNumOfShots() {
     return numOfShots;
 }
 
-void User::setShotSquare(int index, std::string value) {
-    shotSquares[index] = value;
+void User::setShotSquare(int numberOfShots, std::string newSquare) {
+    shotSquares[numberOfShots] = newSquare;
 }
 
-std::string User::getShotSquare(int index) {
-    return shotSquares[index];
+std::string User::getShotSquare(int numberOfShots) {
+    return shotSquares[numberOfShots];
 }
 
 void User::setNumOfAliveShipPts(int num) {

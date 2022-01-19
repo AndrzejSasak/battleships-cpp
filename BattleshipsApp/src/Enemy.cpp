@@ -4,8 +4,20 @@
 
 #include "../include/Enemy.h"
 
-Enemy::Enemy() {
-    numOfShots = 0;
+Enemy::Enemy(int numOfShips1, int numOfShips2, int numOfShips3, int numOfShips4, int numOfAliveShipPts):
+numOfShips1(numOfShips1),
+numOfShips2(numOfShips2),
+numOfShips3(numOfShips3),
+numOfShips4(numOfShips4),
+numOfAliveShipPts(numOfAliveShipPts)
+{}
+
+void Enemy::setDifficulty(int diffValue) {
+    difficulty = diffValue;
+}
+
+int Enemy::getDifficulty() {
+    return difficulty;
 }
 
 void Enemy::setNumOfShips1(int num) {
@@ -56,18 +68,6 @@ std::string Enemy::getShotSquare(int index) {
     return shotSquares[index];
 }
 
-void Enemy::setHasTarget(bool newHasTarget) {
-    hasTarget = newHasTarget;
-}
-
-bool Enemy::getHasTarget() {
-    return hasTarget;
-}
-
-void Enemy::setPrevShotSquare(std::string newPrev) {
-    previouslyShotSquare = newPrev;
-}
-
 void Enemy::setNumOfAliveShipPts(int num) {
     numOfAliveShipPts = num;
 }
@@ -76,12 +76,12 @@ int Enemy::getNumOfAliveShipPts() {
     return numOfAliveShipPts;
 }
 
-std::string Enemy::getPrevShotSquare() {
-    return previouslyShotSquare;
-}
-
 void Enemy::operator--() {
     --numOfAliveShipPts;
 }
+
+
+
+
 
 

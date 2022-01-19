@@ -9,6 +9,29 @@ void printWelcomeScreen() {
     std::cout << "Welcome to the Battleships game!" << std::endl;
 }
 
+
+void pickDifficulty(Enemy *enemy) {
+    std::cout << "Please pick the difficulty of the enemy (1 for easy, 2 for medium, 3 for hard):" << std::endl;
+    int difficulty;
+    std::cin >> difficulty;
+
+    if(difficulty == 1 || difficulty == 2 || difficulty == 3) {
+        enemy->setDifficulty(difficulty);
+        switch(difficulty) {
+            case 1: std::cout << "Difficulty picked: easy" << std::endl;
+            break;
+            case 2: std::cout << "Difficulty picked: medium" << std::endl;
+            break;
+            case 3: std::cout << "Difficulty picked: hard" << std::endl;
+            break;
+            default: std::cout << "\nWRONG INPUT\n" << std::endl;
+        }
+    } else {
+        throw Exception("difficulty was not picked properly", 1);
+    }
+
+}
+
 void selectUser(char *argv1, char *argv2, std::fstream *usersFile) {
     std::map<std::string, std::string> map;
     std::string name(argv1);
@@ -145,9 +168,9 @@ void pickAllUserShips(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[]
     //picking ships of length 2
     for(int i = 0; i < user->getNumOfShips2(); i++) pickUserShip(interf, userShips2[i]);
     //picking ships of length 3
-    for(int i = 0; i < user->getNumOfShips3(); i++) pickUserShip(interf, userShips2[i]);
+    for(int i = 0; i < user->getNumOfShips3(); i++) pickUserShip(interf, userShips3[i]);
     //picking ships of length 4
-    for(int i = 0; i < user->getNumOfShips4(); i++) pickUserShip(interf, userShips2[i]);
+    for(int i = 0; i < user->getNumOfShips4(); i++) pickUserShip(interf, userShips4[i]);
 }
 
 void pickUserShip(Interface *interf, Ship *userShip) {
@@ -162,12 +185,15 @@ void pickUserShip(Interface *interf, Ship *userShip) {
         std::cin >> shipSquares[i];
 
         //checking if is input is in form of 2 char squares for example: A1, B5, J9 etc
-        int value = (int)shipSquares[i].at(0);
-        if(shipSquares[i].length() != 2 || value < 65 || value > 74 || (int)shipSquares[i].at(1) - 48 < 0 || (int)shipSquares[i].at(1) - 48 > 9) {
+        if(shipSquares[i].length() != 2) {
+            throw Exception("square not assigned properly", 1);
+        } else if((int)shipSquares[i].at(0) < 65 || (int)shipSquares[i].at(0) > 74) {
+            throw Exception("square not assigned properly", 1);
+        } else if((int)shipSquares[i].at(1) - 48 < 0 || (int)shipSquares[i].at(1) - 48 > 9) {
             throw Exception("square not assigned properly", 1);
         }
 
-        //checking if the ship squares are next to each other
+        //checking if the ship squares are next to each other //TO BE FIXED
         squareIndex[i] = parseSquareInputToIndex(shipSquares[i]);
         if((squareIndex[i] != (squareIndex[i-1] - 10) && squareIndex[i] != (squareIndex[i-1]  + 10) && squareIndex[i] != (squareIndex[i-1] - 1) && squareIndex[i] != (squareIndex[i-1]+ 1)) && i > 0) {
             throw Exception("squares not assigned properly",2);
@@ -200,7 +226,7 @@ void pickUserShip(Interface *interf, Ship *userShip) {
 
 }
 
-int checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfEnemy, Interface *interf, User *playerShotAt) {
+bool checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfEnemy, Interface *interf, User *playerShotAt) {
     int lengthOfShip = ships[0]->getLength();
     int numOfShips;
     if(lengthOfShip == 1)  numOfShips = playerShotAt->getNumOfShips1();
@@ -217,7 +243,7 @@ int checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfEnemy, Interf
                         ships[i]->setAlive(false);
                     }
                     interf->setDestroyedUserShipWhole(guessSquareOfEnemy, interf);
-                    return 1;
+                    return true;
                 }
             }
         }
@@ -239,21 +265,21 @@ int checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfEnemy, Interf
                                     interf->setDestroyedUserShipWhole(ships[i]->getShipSquares()[k], interf);
                                 }
                                 ships[i]->setAlive(false);
-                                return 1;
+                                return true;
                             }
                         }
                         interf->setDestroyedUserShipPart(guessSquareOfEnemy, interf);
-                        return 1;
+                        return true;
                     }
                 }
             }
         }
     }
 
-    return 0;
+    return false;
 }
 
-int checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfUser, Interface *interf, Enemy *playerShotAt) {
+bool checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfUser, Interface *interf, Enemy *playerShotAt) {
 
     int lengthOfShip = ships[0]->getLength();
     int numOfShips;
@@ -270,12 +296,12 @@ int checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfUser, Interfa
                         std::cout << "You guessed correctly! You destroyed this enemy ship!" << std::endl;
                         ships[i]->setAlive(false);
                         interf->setDestroyedEnemyShipWhole(guessSquareOfUser, interf);
-                        //setSurroundingsTaken(ships[i], interf);
-                        return 1;
-                    } else {
+
+                        return true;
+                    } /*else {
                         std::cout << "You have already destroyed this ship!" << std::endl;
                         return 0;
-                    }
+                    }*/
                 }
             }
         }
@@ -297,21 +323,21 @@ int checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfUser, Interfa
                                     interf->setDestroyedEnemyShipWhole(ships[i]->getShipSquares()[k], interf);
                                 }
                                 ships[i]->setAlive(false);
-                                return 1;
+                                return true;
                             }
 
                         }
-                    } else {
+                    } /*else {
                         std::cout << "You have already destroyed this part of the ship!" << std::endl;
                         return 0;
-                    }
+                    }*/
                     interf->setDestroyedEnemyShipPart(guessSquareOfUser, interf);
-                    return 1;
+                    return true;
                 }
             }
         }
     }
-    return 0;
+    return false ;
 }
 
 //templates
@@ -349,7 +375,7 @@ int userShoot(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Shi
     user->setShotSquare(user->getNumOfShots(), guessSquare);
     user->setNumOfShots(user->getNumOfShots() + 1);
 
-    int status[4] = {0, 0, 0, 0};
+    bool status[4] = {false, false, false, false};
     status[0] = checkIfGuessWasCorrect(enemyShips1, guessSquare, interf, playerShotAt);
     status[1] = checkIfGuessWasCorrect(enemyShips2, guessSquare, interf, playerShotAt);
     status[2] = checkIfGuessWasCorrect(enemyShips3, guessSquare, interf, playerShotAt);
