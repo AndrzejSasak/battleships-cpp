@@ -22,10 +22,33 @@
  */
 void printWelcomeScreen();
 
+//overloaded functions depending on which player's number of alive ships is returned
+/**
+ * this function returns the number of alive ships of the user
+ * @param ships1 user ships of length 1
+ * @param ships2 user ships of length 2
+ * @param ships3 user ships of length 3
+ * @param ships4 user ships of length 4
+ * @param user instance of the user player
+ * @return the number of alive ships of the user
+ */
 int getNumOfAliveShips(Ship *ships1[], Ship *ships2[], Ship *ships3[], Ship *ships4[], User *user);
 
+/**
+ * this function returns the number of alive ships of the enemy
+ * @param ships1 enemy ships of length 1
+ * @param ships2 enemy ships of length 2
+ * @param ships3 enemy ships of length 3
+ * @param ships4 enemy ships of length 4
+ * @param user instance of the enemy player
+ * @return the number of alive ships of the enemy
+ */
 int getNumOfAliveShips(Ship *ships1[], Ship *ships2[], Ship *ships3[], Ship *ships4[], Enemy *enemy);
 
+/**
+ * this function is used to get difficulty from the user from standard input
+ * @param enemy instance of the enemy player
+ */
 void pickDifficulty(Enemy *enemy);
 
 /**

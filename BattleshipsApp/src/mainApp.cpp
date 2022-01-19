@@ -69,12 +69,10 @@ int main(int argc, char *argv[]) {
             isError = false;
         } catch (Exception &e) {
             std::cout << e.what() << std::endl;
-            std::cout << "ERROR HAPPENED!" << std::endl;
             std::cout << "PICK SHIPS AGAIN: " << std::endl;
             interf.resetUserArea();
             isError = true;
         } catch (...) {
-            std::cout << "ERROR HAPPENED!" << std::endl;
             std::cout << "PICK SHIPS AGAIN: " << std::endl;
             interf.resetUserArea();
             isError = true;
@@ -114,10 +112,10 @@ int main(int argc, char *argv[]) {
                 isError = true;
             }
         }
-
-
-        interf.printInterface();
         while(wasEnemyHit) {
+            std::cout << "NUMBER OF YOUR ALIVE SHIPS: " << getNumOfAliveShips(userShips1, userShips2, userShips3, userShips4, &user) << std::endl;
+            std::cout << "NUMBER OF ENEMY ALIVE SHIPS: " << getNumOfAliveShips(enemyShips1, enemyShips2, enemyShips3, enemyShips4, &enemy) << std::endl;
+            interf.printInterface();
             //decrementing number of enemy's ship parts
             --enemy; //enemy.setNumOfAliveShipPts(enemy.getNumOfAliveShipPts() - wasUserHit);
             if (enemy.getNumOfAliveShipPts() == 0) {
@@ -142,8 +140,9 @@ int main(int argc, char *argv[]) {
                     isError = true;
                 }
             }
-
-            interf.printInterface();
+           // std::cout << "NUMBER OF YOUR ALIVE SHIPS: " << getNumOfAliveShips(userShips1, userShips2, userShips3, userShips4, &user) << std::endl;
+            //std::cout << "NUMBER OF ENEMY ALIVE SHIPS: " << getNumOfAliveShips(userShips1, enemyShips2, enemyShips3, enemyShips4, &enemy) << std::endl;
+           // interf.printInterface();
         }
         if(!gameIsUndecided) break;
 

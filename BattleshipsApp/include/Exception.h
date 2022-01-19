@@ -30,6 +30,10 @@ public:
 
     Exception(std::string msg, short errorCode);
 
+    /**
+     * this function return the error message
+     * @return error message
+     */
     const char *what() {
         errorFinalMsg = msg + ": " + errorTypes[errorCode];
         return  errorFinalMsg.c_str();

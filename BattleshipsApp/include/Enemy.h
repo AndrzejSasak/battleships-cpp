@@ -23,8 +23,16 @@ private:
 public:
     Enemy(int numOfShips1, int numOfShips2, int numOfShips3, int numOfShips4, int numOfAliveShipPts);
 
+    /**
+     * this function sets the difficulty of the enemy to diffValue
+     * @param diffValue difficulty of the enemy
+     */
     void setDifficulty(int diffValue);
 
+    /**
+     * this function returns the difficulty of the enemy
+     * @return difficulty of the enemy
+     */
     int getDifficulty();
 
     /**
