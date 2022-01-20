@@ -19,7 +19,6 @@ int main(int argc, char *argv[]) {
     Interface interf;
     Enemy enemy(4, 3, 2, 1, 20);
     User user(4, 3, 2, 1, 20);
-    int difficulty;
 
     std::fstream usersFile("../../BattleshipsApp/users_database/users.txt");
     if (argc == 3) {
@@ -36,13 +35,18 @@ int main(int argc, char *argv[]) {
 
     printWelcomeScreen();
 
-    try {
-        pickDifficulty(&enemy);
-    } catch (Exception &e) {
-        std::cout << e.what() << std::endl;
-        exit(-1);
-    } catch (...) {
-        std::cout << "ERROR HAPPENED!" << std::endl;
+    bool isError = true;
+    while (isError) {
+        try {
+            pickDifficulty(&enemy);
+            isError = false;
+        } catch (Exception &e) {
+            std::cout << e.what() << std::endl;
+            isError = true;
+        } catch (...) {
+            std::cout << "ERROR HAPPENED!" << std::endl;
+            isError = true;
+        }
     }
 
     //initialize memory for enemy ships
@@ -93,7 +97,7 @@ int main(int argc, char *argv[]) {
 
     //game loop
     bool gameIsUndecided = true;
-    bool isError;
+    isError = true;
     while (gameIsUndecided) {
         //user turn
         int wasEnemyHit;

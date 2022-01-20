@@ -47,12 +47,13 @@ int getNumOfAliveShips(Ship *ships1[], Ship *ships2[], Ship *ships3[], Ship *shi
 
 void pickDifficulty(Enemy *enemy) {
     std::cout << "Please pick the difficulty of the enemy (1 for easy, 2 for medium, 3 for hard):" << std::endl;
-    int difficulty;
+    std::string difficulty;
     std::cin >> difficulty;
 
-    if(difficulty == 1 || difficulty == 2 || difficulty == 3) {
-        enemy->setDifficulty(difficulty);
-        switch(difficulty) {
+    if(difficulty == "1" || difficulty == "2" || difficulty == "3") {
+        int diffValue = std::stoi(difficulty);
+        enemy->setDifficulty(diffValue);
+        switch(diffValue) {
             case 1: std::cout << "Difficulty picked: easy" << std::endl;
             break;
             case 2: std::cout << "Difficulty picked: medium" << std::endl;
@@ -92,7 +93,7 @@ void selectUser(char *argv1, char *argv2, std::fstream *usersFile) {
         std::cout << "Wrong password for the entered username!" << std::endl;
         exit(1);
     } else if(map.find(name) == map.end()) {
-        std::cout << "Entered name is new in the database. Welcome new user!" << std::endl;
+        std::cout << "Entered name is new in the database. Welcome " << name  << "!" << std::endl;
     }
     usersFile->close();
     if(usersFile->is_open()) {
@@ -532,7 +533,6 @@ int enemyShoot(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship 
     status[1] = checkIfGuessWasCorrect(userShips2, guessSquare, interf, playerShotAt);
     status[2] = checkIfGuessWasCorrect(userShips3, guessSquare, interf, playerShotAt);
     status[3] = checkIfGuessWasCorrect(userShips4, guessSquare, interf, playerShotAt);
-    std::cout << "f" << std::endl;
 
     if(status[0] == 1) {
         return status[0];

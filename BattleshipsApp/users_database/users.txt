@@ -1,2 +1,5 @@
  
 endriu endriupass
+newuser newuserpass
+newuser2 newuser2
+newuser3 newuser3pass
