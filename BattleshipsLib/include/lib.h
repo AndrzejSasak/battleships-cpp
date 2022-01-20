@@ -8,6 +8,7 @@
 #include <map>
 #include <algorithm>
 #include <fstream>
+#include <windows.h>
 #include "../../BattleshipsApp/include/Ship.h"
 #include "../../BattleshipsApp/include/Ship1.h"
 #include "../../BattleshipsApp/include/Ship2.h"

@@ -21,7 +21,8 @@ public:
     void printInterface();
 
     /**
-     * this function checks if a square at surroundingSquareIndex is a taken square
+     * this function checks if a square at surroundingSquareIndex is a taken square and sets
+     * the square at squareIndex if the square surroundings are not taken
      * @param squareIndex index of the square to be chosen
      * @param surroundingSquareIndex index of the square next to the square at index squareIndex
      */
@@ -37,7 +38,7 @@ public:
      * this function sets the square newSquare as taken by an enemy ship
      * @param newSquare square to be taken
      */
-    void setTakenByEnemyShip(std::string newSquare);
+    [[maybe_unused]] void setTakenByEnemyShip(std::string newSquare);
 
     /**
      * this function sets the square newSquare as a destroyed part of a user ship

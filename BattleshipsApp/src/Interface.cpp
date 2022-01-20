@@ -6,7 +6,7 @@
 #include "../include/Ship.h"
 #include <lib.h>
 #include <iostream>
-#include <windows.h>
+
 
 #define TAKENBYSHIP "@"
 #define FREESQUARE "."
@@ -101,12 +101,12 @@ void Interface::pickEnemyAreaColors(HANDLE hConsole, int i) {
         SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         std::cout << " ";
     } else if(enemyArea[i] == DESTROYEDSHIPPART) {
-        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
         std::cout << enemyArea[i];
         SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         std::cout << " ";
-    } else if(enemyArea[i] == DESTROYEDSHIPFINAL) {
-        SetConsoleTextAttribute(hConsole, FOREGROUND_RED );
+    } else if(enemyArea[i] == DESTROYEDSHIPFINAL ) {
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY );
         std::cout << enemyArea[i];
         SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         std::cout << " ";
@@ -122,17 +122,17 @@ void Interface::pickEnemyAreaColors(HANDLE hConsole, int i) {
 
 void Interface::pickUserAreaColors(HANDLE hConsole, int i) {
     if(userArea[i] == TAKENBYSHIP) {
-        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
         std::cout << userArea[i];
         SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         std::cout << " ";
     } else if(userArea[i] == DESTROYEDSHIPPART) {
-        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
         std::cout << userArea[i];
         SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         std::cout << " ";
     } else if(userArea[i] == DESTROYEDSHIPFINAL) {
-        SetConsoleTextAttribute(hConsole, FOREGROUND_RED );
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
         std::cout << userArea[i];
         SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         std::cout << " ";
@@ -141,7 +141,7 @@ void Interface::pickUserAreaColors(HANDLE hConsole, int i) {
         std::cout << userArea[i];
         SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         std::cout << " ";
-    } else {
+    }  else {
         std::cout << userArea[i] + " ";
     }
 }
@@ -193,7 +193,8 @@ void Interface::setTakenByUserShip(std::string newSquare) {
         return;
     } else if (newSquare[1] == '9' && newSquare[0] != 'A' && newSquare[0] != 'J') {
         checkSurroundings(squareIndex, -11);
-        checkSurroundings(squareIndex, 1);
+        checkSurroundings(squareIndex, -1);
+        checkSurroundings(squareIndex, -10);
         checkSurroundings(squareIndex, 9);
         checkSurroundings(squareIndex, 10);
         /*
@@ -243,7 +244,7 @@ void Interface::setTakenByUserShip(std::string newSquare) {
         return;
     } else if(newSquare[0] == 'J' && newSquare[1] == '0') {
         checkSurroundings(squareIndex, 1);
-        checkSurroundings(squareIndex, 9);
+        checkSurroundings(squareIndex, -9);
         checkSurroundings(squareIndex, -10);
         /*
         if (userArea[squareIndex+1] != TAKENBYSHIP) userArea[squareIndex+1] = SURROUNDINGSHIP;
@@ -274,11 +275,9 @@ void Interface::setTakenByUserShip(std::string newSquare) {
     }
 }
 
-//sets an unused enemy square to a ship square
-//mozna poprzeciazac funkcje
-void Interface::setTakenByEnemyShip(std::string newSquare) {
+[[maybe_unused]] void Interface::setTakenByEnemyShip(std::string newSquare) {
     int squareIndex = parseSquareInputToIndex(newSquare);
-    //enemyArea[squareIndex] = TAKENBYSHIP;
+    enemyArea[squareIndex] = TAKENBYSHIP;
 }
 
 void Interface::setDestroyedUserShipPart(std::string newSquare) {

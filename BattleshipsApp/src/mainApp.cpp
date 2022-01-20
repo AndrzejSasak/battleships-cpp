@@ -13,7 +13,7 @@
 
 
 int main(int argc, char *argv[]) {
-
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     srand(time(nullptr));
 
     Interface interf;
@@ -108,11 +108,9 @@ int main(int argc, char *argv[]) {
                 isError = false;
             } catch (Exception &e) {
                 std::cout << e.what() << std::endl;
-                std::cout << "ERROR HAPPENED!" << std::endl;
                 std::cout << "SHOOT AGAIN: " << std::endl;
                 isError = true;
             } catch (...) {
-                std::cout << "ERROR HAPPENED!" << std::endl;
                 std::cout << "SHOOT AGAIN: " << std::endl;
                 isError = true;
             }
@@ -127,7 +125,11 @@ int main(int argc, char *argv[]) {
             //decrementing number of enemy's ship parts
             --enemy; //enemy.setNumOfAliveShipPts(enemy.getNumOfAliveShipPts() - wasUserHit);
             if (enemy.getNumOfAliveShipPts() == 0) {
+                SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                 std::cout << "You have won the game! Congratulations!" << std::endl;
+                std::cout << "You have won the game! Congratulations!" << std::endl;
+                std::cout << "You have won the game! Congratulations!" << std::endl;
+                SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
                 interf.printInterface();
                 gameIsUndecided = false;
                 break;
