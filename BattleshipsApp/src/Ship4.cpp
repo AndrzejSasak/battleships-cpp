@@ -16,10 +16,13 @@ Ship4::~Ship4() {
 }
 
 void Ship4::initShip(std::string *shipSquares) {
-    shipSquare[0] = shipSquares[0];
-    shipSquare[1] = shipSquares[1];
-    shipSquare[2] = shipSquares[2];
-    shipSquare[3] = shipSquares[3];
+    //shipSquare[0] = shipSquares[0];
+    //shipSquare[1] = shipSquares[1];
+    //shipSquare[2] = shipSquares[2];
+    //shipSquare[3] = shipSquares[3];
+    for(int i = 0; i < length; i++) {
+        shipSquare[i] = shipSquares[i];
+    }
 }
 
 std::string* Ship4::getShipSquares() {

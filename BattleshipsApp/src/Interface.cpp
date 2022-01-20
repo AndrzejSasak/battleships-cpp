@@ -6,13 +6,14 @@
 #include "../include/Ship.h"
 #include <lib.h>
 #include <iostream>
+#include <windows.h>
 
 #define TAKENBYSHIP "@"
 #define FREESQUARE "."
 #define SURROUNDINGSHIP ","
 #define DESTROYEDSHIPPART "x"
 #define DESTROYEDSHIPFINAL "X"
-#define ALREADYSHOTSQUARE "A"
+#define ALREADYSHOTSQUARE "*"
 
 Interface::Interface() {
     for(int i = 0; i < 100; ++i) {
@@ -25,6 +26,7 @@ Interface::Interface() {
 
 //prints interf
 void Interface::printInterface()  {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     std::cout << "YOUR AREA:" << std::endl;
     std::cout << "  0 1 2 3 4 5 6 7 8 9" << std::endl;
     for(int i = 0; i < 100; ++i) {
@@ -52,7 +54,7 @@ void Interface::printInterface()  {
             default:
                 break;
         }
-        std::cout << userArea[i] + " ";
+        pickUserAreaColors(hConsole, i);
         if(i == 0) {
             continue;
         } else if (i%10 == 9) std::cout << std::endl;
@@ -85,10 +87,68 @@ void Interface::printInterface()  {
             default:
                 break;
         }
-        std::cout << enemyArea[i] + " ";
+        pickEnemyAreaColors(hConsole, i);
         if(i == 0) {
             continue;
         } else if (i%10 == 9) std::cout << std::endl;
+    }
+}
+
+void Interface::pickEnemyAreaColors(HANDLE hConsole, int i) {
+    if(enemyArea[i] == TAKENBYSHIP) {
+        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+        std::cout << enemyArea[i];
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        std::cout << " ";
+    } else if(enemyArea[i] == DESTROYEDSHIPPART) {
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+        std::cout << enemyArea[i];
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        std::cout << " ";
+    } else if(enemyArea[i] == DESTROYEDSHIPFINAL) {
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED );
+        std::cout << enemyArea[i];
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        std::cout << " ";
+    } else if (enemyArea[i] == ALREADYSHOTSQUARE) {
+        SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+        std::cout << enemyArea[i];
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        std::cout << " ";
+    } else {
+        std::cout << enemyArea[i] + " ";
+    }
+}
+
+void Interface::pickUserAreaColors(HANDLE hConsole, int i) {
+    if(userArea[i] == TAKENBYSHIP) {
+        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+        std::cout << userArea[i];
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        std::cout << " ";
+    } else if(userArea[i] == DESTROYEDSHIPPART) {
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+        std::cout << userArea[i];
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        std::cout << " ";
+    } else if(userArea[i] == DESTROYEDSHIPFINAL) {
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED );
+        std::cout << userArea[i];
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        std::cout << " ";
+    } else if (userArea[i] == ALREADYSHOTSQUARE) {
+        SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+        std::cout << userArea[i];
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        std::cout << " ";
+    } else {
+        std::cout << userArea[i] + " ";
+    }
+}
+
+void Interface::checkSurroundings(int squareIndex, int surroundingSquareIndex)  {
+    if (userArea[squareIndex + surroundingSquareIndex] != TAKENBYSHIP) {
+        userArea[squareIndex + surroundingSquareIndex] = SURROUNDINGSHIP;
     }
 }
 
@@ -98,6 +158,15 @@ void Interface::setTakenByUserShip(std::string newSquare) {
     userArea[squareIndex] = TAKENBYSHIP;
 
     if(newSquare[0] != 'A' && newSquare[0] != 'J' && newSquare[1] != '0' && newSquare[1] != '9') {
+        checkSurroundings(squareIndex, -11);
+        checkSurroundings(squareIndex, -10);
+        checkSurroundings(squareIndex, -9);
+        checkSurroundings(squareIndex, -1);
+        checkSurroundings(squareIndex, 1);
+        checkSurroundings(squareIndex, 9);
+        checkSurroundings(squareIndex, 10);
+        checkSurroundings(squareIndex, 11);
+        /*
         if (userArea[squareIndex-11] != TAKENBYSHIP) userArea[squareIndex-11] = SURROUNDINGSHIP;
         if (userArea[squareIndex-10] != TAKENBYSHIP) userArea[squareIndex-10] = SURROUNDINGSHIP;
         if (userArea[squareIndex-9] != TAKENBYSHIP) userArea[squareIndex-9] = SURROUNDINGSHIP;
@@ -106,56 +175,103 @@ void Interface::setTakenByUserShip(std::string newSquare) {
         if (userArea[squareIndex+9] != TAKENBYSHIP) userArea[squareIndex+9] = SURROUNDINGSHIP;
         if (userArea[squareIndex+10] != TAKENBYSHIP) userArea[squareIndex+10] = SURROUNDINGSHIP;
         if (userArea[squareIndex+11] != TAKENBYSHIP) userArea[squareIndex+11] = SURROUNDINGSHIP;
+         */
         return;
     } else if (newSquare[1] == '0' && newSquare[0] != 'A' && newSquare[0] != 'J') {
+        checkSurroundings(squareIndex, -10);
+        checkSurroundings(squareIndex, -9);
+        checkSurroundings(squareIndex, 1);
+        checkSurroundings(squareIndex, 10);
+        checkSurroundings(squareIndex, 11);
+        /*
         if (userArea[squareIndex-10] != TAKENBYSHIP) userArea[squareIndex-10] = SURROUNDINGSHIP;
         if (userArea[squareIndex-9] != TAKENBYSHIP) userArea[squareIndex-9] = SURROUNDINGSHIP;
         if (userArea[squareIndex+1] != TAKENBYSHIP) userArea[squareIndex+1] = SURROUNDINGSHIP;
         if (userArea[squareIndex+10] != TAKENBYSHIP) userArea[squareIndex+10] = SURROUNDINGSHIP;
         if (userArea[squareIndex+11] != TAKENBYSHIP) userArea[squareIndex+11] = SURROUNDINGSHIP;
+         */
         return;
     } else if (newSquare[1] == '9' && newSquare[0] != 'A' && newSquare[0] != 'J') {
+        checkSurroundings(squareIndex, -11);
+        checkSurroundings(squareIndex, 1);
+        checkSurroundings(squareIndex, 9);
+        checkSurroundings(squareIndex, 10);
+        /*
         if (userArea[squareIndex-11] != TAKENBYSHIP) userArea[squareIndex-11] = SURROUNDINGSHIP;
         if (userArea[squareIndex+1] != TAKENBYSHIP) userArea[squareIndex+1] = SURROUNDINGSHIP;
         if (userArea[squareIndex+9] != TAKENBYSHIP) userArea[squareIndex+9] = SURROUNDINGSHIP;
         if (userArea[squareIndex+10] != TAKENBYSHIP)userArea[squareIndex+10] = SURROUNDINGSHIP;
+         */
         return;
     } else if (newSquare[0] == 'A' && newSquare[1] != '0' && newSquare[1] != '9') {
+        checkSurroundings(squareIndex, -1);
+        checkSurroundings(squareIndex, 1);
+        checkSurroundings(squareIndex, 9);
+        checkSurroundings(squareIndex, 10);
+        checkSurroundings(squareIndex, 11);
+        /*
         if (userArea[squareIndex-1] != TAKENBYSHIP) userArea[squareIndex-1] = SURROUNDINGSHIP;
         if (userArea[squareIndex+1] != TAKENBYSHIP) userArea[squareIndex+1] = SURROUNDINGSHIP;
         if (userArea[squareIndex+9] != TAKENBYSHIP) userArea[squareIndex+9] = SURROUNDINGSHIP;
         if (userArea[squareIndex+10] != TAKENBYSHIP) userArea[squareIndex+10] = SURROUNDINGSHIP;
         if (userArea[squareIndex+11] != TAKENBYSHIP) userArea[squareIndex+11] = SURROUNDINGSHIP;
+         */
         return;
     } else if (newSquare[0] == 'J' && newSquare[1] != '0' && newSquare[1] != '9') {
+        checkSurroundings(squareIndex, -1);
+        checkSurroundings(squareIndex, 1);
+        checkSurroundings(squareIndex, -11);
+        checkSurroundings(squareIndex, -10);
+        checkSurroundings(squareIndex, -9);
+        /*
         if (userArea[squareIndex-1] != TAKENBYSHIP) userArea[squareIndex-1] = SURROUNDINGSHIP;
         if (userArea[squareIndex+1] != TAKENBYSHIP) userArea[squareIndex+1] = SURROUNDINGSHIP;
         if (userArea[squareIndex-11] != TAKENBYSHIP) userArea[squareIndex-11] = SURROUNDINGSHIP;
         if (userArea[squareIndex-10] != TAKENBYSHIP) userArea[squareIndex-10] = SURROUNDINGSHIP;
         if (userArea[squareIndex-9] != TAKENBYSHIP) userArea[squareIndex-9] = SURROUNDINGSHIP;
+         */
         return;
     } else if(newSquare[0] == 'A' && newSquare[1] == '0') {
+        checkSurroundings(squareIndex, 1);
+        checkSurroundings(squareIndex, 10);
+        checkSurroundings(squareIndex, 11);
+        /*
         if (userArea[squareIndex+1] != TAKENBYSHIP) userArea[squareIndex+1] = SURROUNDINGSHIP;
         if (userArea[squareIndex+10] != TAKENBYSHIP) userArea[squareIndex+10] = SURROUNDINGSHIP;
         if (userArea[squareIndex+11] != TAKENBYSHIP) userArea[squareIndex+11] = SURROUNDINGSHIP;
+         */
         return;
     } else if(newSquare[0] == 'J' && newSquare[1] == '0') {
+        checkSurroundings(squareIndex, 1);
+        checkSurroundings(squareIndex, 9);
+        checkSurroundings(squareIndex, -10);
+        /*
         if (userArea[squareIndex+1] != TAKENBYSHIP) userArea[squareIndex+1] = SURROUNDINGSHIP;
         if (userArea[squareIndex-9] != TAKENBYSHIP) userArea[squareIndex-9] = SURROUNDINGSHIP;
         if (userArea[squareIndex-10] != TAKENBYSHIP) userArea[squareIndex-10] = SURROUNDINGSHIP;
+         */
         return;
     } else if(newSquare[0] == 'A' && newSquare[1] == '9') {
+        checkSurroundings(squareIndex, -1);
+        checkSurroundings(squareIndex, 9);
+        checkSurroundings(squareIndex, 10);
+        /*
         if (userArea[squareIndex-1] != TAKENBYSHIP) userArea[squareIndex-1] = SURROUNDINGSHIP;
         if (userArea[squareIndex+9] != TAKENBYSHIP) userArea[squareIndex+9] = SURROUNDINGSHIP;
         if (userArea[squareIndex+10] != TAKENBYSHIP) userArea[squareIndex+10] = SURROUNDINGSHIP;
+         */
         return;
     } else if(newSquare[0] == 'J' && newSquare[1] == '9') {
+        checkSurroundings(squareIndex, -1);
+        checkSurroundings(squareIndex, -11);
+        checkSurroundings(squareIndex, -10);
+        /*
         if (userArea[squareIndex-1] != TAKENBYSHIP) userArea[squareIndex-1] = SURROUNDINGSHIP;
         if (userArea[squareIndex-11] != TAKENBYSHIP) userArea[squareIndex-11] = SURROUNDINGSHIP;
         if (userArea[squareIndex-10] != TAKENBYSHIP) userArea[squareIndex-10] = SURROUNDINGSHIP;
+         */
         return;
     }
-
 }
 
 //sets an unused enemy square to a ship square
@@ -194,7 +310,6 @@ bool Interface::isTakenByShip(std::string newSquare) {
     return isTaken;
 }
 
-//mozna przeciazyc setAlreadyShotUserSquare oraz setAlreadyShotEnemySquare
 void Interface::setAlreadyShotUserSquare(std::string newSquare) {
     int squareIndex = parseSquareInputToIndex(newSquare);
     userArea[squareIndex] = ALREADYSHOTSQUARE;
@@ -205,8 +320,3 @@ void Interface::setAlreadyShotEnemySquare(std::string newSquare) {
    enemyArea[squareIndex] = ALREADYSHOTSQUARE;
 }
 
-void Interface::resetUserArea() {
-    for(int i = 0; i < 100; ++i) {
-        userArea[i] = FREESQUARE;
-    }
-}

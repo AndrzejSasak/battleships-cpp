@@ -13,15 +13,16 @@
 
 
 int main(int argc, char *argv[]) {
+
     srand(time(nullptr));
 
     Interface interf;
-    Enemy enemy(4,3,2,1, 20);
+    Enemy enemy(4, 3, 2, 1, 20);
     User user(4, 3, 2, 1, 20);
     int difficulty;
 
     std::fstream usersFile("../../BattleshipsApp/users_database/users.txt");
-    if(argc == 3) {
+    if (argc == 3) {
         try {
             selectUser(argv[1], argv[2], &usersFile);
         } catch (Exception &e) {
@@ -34,7 +35,6 @@ int main(int argc, char *argv[]) {
     }
 
     printWelcomeScreen();
-
 
     try {
         pickDifficulty(&enemy);
@@ -60,9 +60,6 @@ int main(int argc, char *argv[]) {
     allocateEnemyShipsMemory(&enemy, enemyShips1, enemyShips2, enemyShips3, enemyShips4);
 
     interf.printInterface();
-
-    bool isError;
-    isError = true;
 
     pickAllUserShips(userShips1, userShips2, userShips3, userShips4, &user, &interf);
     /*
@@ -96,11 +93,12 @@ int main(int argc, char *argv[]) {
 
     //game loop
     bool gameIsUndecided = true;
-    while(gameIsUndecided) {
-    //user turn
+    bool isError;
+    while (gameIsUndecided) {
+        //user turn
         int wasEnemyHit;
         isError = true;
-        while(isError) {
+        while (isError) {
             try {
                 wasEnemyHit = userShoot(enemyShips1, enemyShips2, enemyShips3, enemyShips4, &interf, &user, &enemy);
                 isError = false;
@@ -115,9 +113,12 @@ int main(int argc, char *argv[]) {
                 isError = true;
             }
         }
-        while(wasEnemyHit) {
-            std::cout << "NUMBER OF YOUR ALIVE SHIPS: " << getNumOfAliveShips(userShips1, userShips2, userShips3, userShips4, &user) << std::endl;
-            std::cout << "NUMBER OF ENEMY ALIVE SHIPS: " << getNumOfAliveShips(enemyShips1, enemyShips2, enemyShips3, enemyShips4, &enemy) << std::endl;
+        while (wasEnemyHit == 1) {
+            std::cout << "NUMBER OF YOUR ALIVE SHIPS: "
+                      << getNumOfAliveShips(userShips1, userShips2, userShips3, userShips4, &user) << std::endl;
+            std::cout << "NUMBER OF ENEMY ALIVE SHIPS: "
+                      << getNumOfAliveShips(enemyShips1, enemyShips2, enemyShips3, enemyShips4, &enemy)
+                      << std::endl;
             interf.printInterface();
             //decrementing number of enemy's ship parts
             --enemy; //enemy.setNumOfAliveShipPts(enemy.getNumOfAliveShipPts() - wasUserHit);
@@ -128,7 +129,7 @@ int main(int argc, char *argv[]) {
                 break;
             }
             isError = true;
-            while(isError) {
+            while (isError) {
                 try {
                     wasEnemyHit = userShoot(enemyShips1, enemyShips2, enemyShips3, enemyShips4, &interf, &user, &enemy);
                     isError = false;
@@ -143,29 +144,30 @@ int main(int argc, char *argv[]) {
                     isError = true;
                 }
             }
-           // std::cout << "NUMBER OF YOUR ALIVE SHIPS: " << getNumOfAliveShips(userShips1, userShips2, userShips3, userShips4, &user) << std::endl;
+            // std::cout << "NUMBER OF YOUR ALIVE SHIPS: " << getNumOfAliveShips(userShips1, userShips2, userShips3, userShips4, &user) << std::endl;
             //std::cout << "NUMBER OF ENEMY ALIVE SHIPS: " << getNumOfAliveShips(userShips1, enemyShips2, enemyShips3, enemyShips4, &enemy) << std::endl;
-           // interf.printInterface();
+            // interf.printInterface();
         }
-        if(!gameIsUndecided) break;
-
+        if (!gameIsUndecided) break;
         //enemy turn
         //difficulty is either 1, 2 or 3 and that corresponds to the number of shots the enemy takes
-        for(int i = 0; i < enemy.getDifficulty(); i++) {
+        for (int i = 0; i < enemy.getDifficulty(); i++) {
             int wasUserHit = enemyShoot(userShips1, userShips2, userShips3, userShips4, &interf, &enemy, &user);
-            if(wasUserHit) {
-                //decrementing number of user's ship parts;
+            if (wasUserHit == 1) {
+                //decrementing number of user's ship parts;;
                 --user;  //user.setNumOfAliveShipPts(user.getNumOfAliveShipPts() - wasUserHit);
-                  // std::cout << "ALIVE PTS: " << user.getNumOfAliveShipPts() << std::endl;
-                    if(user.getNumOfAliveShipPts() == 0) {
-                        std::cout << "Enemy has destroyed all your ships and won the game! You lost!" << std::endl;
-                        gameIsUndecided = false;
-                        break;
-                    }
+                // std::cout << "ALIVE PTS: " << user.getNumOfAliveShipPts() << std::endl;
+                if (user.getNumOfAliveShipPts() == 0) {
+                    std::cout << "Enemy has destroyed all your ships and won the game! You lost!" << std::endl;
+                    gameIsUndecided = false;
+                    break;
+                }
             }
         }
-        std::cout << "NUMBER OF YOUR ALIVE SHIPS: " << getNumOfAliveShips(userShips1, userShips2, userShips3, userShips4, &user) << std::endl;
-        std::cout << "NUMBER OF ENEMY ALIVE SHIPS: " << getNumOfAliveShips(enemyShips1, enemyShips2, enemyShips3, enemyShips4, &enemy) << std::endl;
+        std::cout << "NUMBER OF YOUR ALIVE SHIPS: "
+                  << getNumOfAliveShips(userShips1, userShips2, userShips3, userShips4, &user) << std::endl;
+        std::cout << "NUMBER OF ENEMY ALIVE SHIPS: "
+                  << getNumOfAliveShips(enemyShips1, enemyShips2, enemyShips3, enemyShips4, &enemy) << std::endl;
         interf.printInterface();
     }
 

@@ -22,6 +22,17 @@
  */
 void printWelcomeScreen();
 
+
+//to finish
+/**
+ * this function reads squares from file and saves them to a ship square of enemy
+ * @param line line from a file
+ * @param index1
+ * @param index2
+ * @return
+ */
+std::string readSquares(std::string line, int index1, int index2);
+
 //overloaded functions depending on which player's number of alive ships is returned
 /**
  * this function returns the number of alive ships of the user

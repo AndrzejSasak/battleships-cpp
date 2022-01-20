@@ -15,7 +15,9 @@ Ship1::~Ship1() {
 }
 
 void Ship1::initShip(std::string *shipSquares) {
-    shipSquare[0] = shipSquares[0];
+    for(int i = 0; i < length; i++) {
+        shipSquare[i] = shipSquares[i];
+    }
 }
 
 int Ship1::getLength() {

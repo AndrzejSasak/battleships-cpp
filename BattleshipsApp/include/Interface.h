@@ -12,7 +12,6 @@ class Interface {
 private:
     std::string userArea[100];
     std::string enemyArea[100];
-
 public:
     Interface();
 
@@ -20,6 +19,13 @@ public:
      * this function prints the interface
      */
     void printInterface();
+
+    /**
+     * this function checks if a square at surroundingSquareIndex is a taken square
+     * @param squareIndex index of the square to be chosen
+     * @param surroundingSquareIndex index of the square next to the square at index squareIndex
+     */
+    void checkSurroundings(int squareIndex, int surroundingSquareIndex);
 
     /**
      * this function sets the square newSquare as taken by a user ship
@@ -77,11 +83,18 @@ public:
     void setDestroyedEnemyShipWhole(std::string newSquare);
 
     /**
-     * thsi function resets all squares in user area to free squares
+     * this functions picks colors of the user based area on types of squares
+     * @param hConsole object used for manipulating colors
+     * @param i index
      */
-    void resetUserArea();
+    void pickUserAreaColors(void *hConsole, int i);
 
-
+    /**
+     * this functions picks colors of the enemy area based on types of squares
+     * @param hConsole object used for manipulating colors
+     * @param i index
+     */
+    void pickEnemyAreaColors(void *hConsole, int i);
 };
 
 #endif //JIPP2_INTERFACE_H

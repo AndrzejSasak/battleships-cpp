@@ -15,7 +15,7 @@ private:
     int numOfShips3;
     int numOfShips4;
 
-    int numOfShots;
+    int numOfShots = 0;
     std::string shotSquares[100];
 
     int difficulty;
