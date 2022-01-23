@@ -1,4 +1,5 @@
-
+ 
 newuser newuserpass
 newuser2 newuserpass
 newuser3 newuser3pass
+wojtek wojtekpassword
