@@ -1,7 +1,3 @@
-//
-// Created by endriu on 03.01.2022.
-//
-
 #ifndef JIPP2_SHIP3_H
 #define JIPP2_SHIP3_H
 
@@ -46,7 +42,6 @@ public:
     * @param num new number of alive parts in a ship
     */
     void setNumOfAliveParts(int num) override;
-
 
 };
 

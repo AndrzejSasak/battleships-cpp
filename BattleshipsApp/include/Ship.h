@@ -1,9 +1,6 @@
-//
-// Created by endriu on 15.12.2021.
-//
-
 #ifndef JIPP2_SHIP_H
 #define JIPP2_SHIP_H
+
 #include <iostream>
 
 class Ship {

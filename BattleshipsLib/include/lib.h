@@ -1,9 +1,6 @@
-//
-// Created by endriu on 15.12.2021.
-//
-
 #ifndef JIPP2_LIB_H
 #define JIPP2_LIB_H
+
 #include <iostream>
 #include <map>
 #include <algorithm>
@@ -17,20 +14,19 @@
 #include "../../BattleshipsApp/include/User.h"
 #include "../../BattleshipsApp/include/Interface.h"
 #include "../../BattleshipsApp/include/Enemy.h"
+#include "../../BattleshipsApp/include/Exception.h"
 
 /**
  * prints a welcome message
  */
 void printWelcomeScreen();
 
-
-//to finish
 /**
  * this function reads squares from file and saves them to a ship square of enemy
  * @param line line from a file
- * @param index1
- * @param index2
- * @return
+ * @param index1 index of a letter in file
+ * @param index2 index of a number in file
+ * @return ship square concatenated from index1 and index2
  */
 std::string readSquares(std::string line, int index1, int index2);
 
@@ -148,6 +144,16 @@ bool checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfEnemy, Inter
 bool checkIfGuessWasCorrect(Ship *ships[], std::string guessSquareOfUser, Interface *interf, Enemy *playerShotAt);
 
 /**
+ * this function checks if the new guess square has already been shot
+ * @tparam T player that is shooting
+ * @param guessSquare guess square of the player shooting
+ * @param playerShooting of type User or Enemy
+ * @return -1 if square was already shot, 0 if the guess square is a newly input square
+ */
+template <typename T>
+int checkIfSquareWasAlreadyShot(std::string &guessSquare, T *playerShooting);
+
+/**
  * this function reads a user guess square from standard input and checks if the square was already shot
  * and if the guess is correct
  * @param enemyShips1 enemy ships of length 1
@@ -196,8 +202,8 @@ void allocateUserShipsMemory(User *user, Ship *userShips1[], Ship *userShips2[],
  * @param enemy instance of the enemy player
  * @param enemyShips1 enemy ships of length 1
  * @param enemyShips2 enemy ships of length 2
- * @param enemyShips3
- * @param enemyShips4
+ * @param enemyShips3 enemy ships of length 3
+ * @param enemyShips4 enemy ships of length 4
  */
 void allocateEnemyShipsMemory(Enemy *enemy, Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Ship *enemyShips4[]);
 
@@ -221,7 +227,8 @@ void deallocateUserShipsMemory(User *user, Ship *userShips1[], Ship *userShips2[
  */
 void deallocateEnemyShipsMemory(Enemy *enemy, Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Ship *enemyShips4[]);
 
-//template in .cpp
-//int checkIfSquareWasAlreadyShot(std::string &guessSquare, T *playerShotAt);
-
 #endif //JIPP2_LIB_H
+
+
+
+

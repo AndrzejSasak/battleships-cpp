@@ -1,7 +1,3 @@
-//
-// Created by endriu on 03.01.2022.
-//
-
 #include "../include/Ship3.h"
 
 Ship3::Ship3() {

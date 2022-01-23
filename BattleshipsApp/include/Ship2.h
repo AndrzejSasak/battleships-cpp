@@ -1,7 +1,3 @@
-//
-// Created by endriu on 15.12.2021.
-//
-
 #ifndef JIPP2_SHIP2_H
 #define JIPP2_SHIP2_H
 

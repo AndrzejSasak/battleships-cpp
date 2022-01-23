@@ -1,7 +1,3 @@
-//
-// Created by endriu on 03.01.2022.
-//
-
 #include "../include/Ship1.h"
 
 Ship1::Ship1() {

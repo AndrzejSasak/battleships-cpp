@@ -1,14 +1,8 @@
-//
-// Created by endriu on 17.01.2022.
-//
-
 #ifndef BATTLESHIPS_EXCEPTION_H
 #define BATTLESHIPS_EXCEPTION_H
 
 #include <iostream>
 #include <exception>
-
-
 
 class Exception : public std::exception {
 private:

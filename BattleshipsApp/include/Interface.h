@@ -1,11 +1,6 @@
-//
-// Created by endriu on 15.12.2021.
-//
-
 #ifndef JIPP2_INTERFACE_H
 #define JIPP2_INTERFACE_H
 
-//#include <lib.h>
 #include <iostream>
 
 class Interface {
@@ -38,7 +33,7 @@ public:
      * this function sets the square newSquare as taken by an enemy ship
      * @param newSquare square to be taken
      */
-    [[maybe_unused]] void setTakenByEnemyShip(std::string newSquare);
+    void setTakenByEnemyShip(std::string newSquare);
 
     /**
      * this function sets the square newSquare as a destroyed part of a user ship

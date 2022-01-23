@@ -1,13 +1,8 @@
-//
-// Created by endriu on 03.01.2022.
-//
-
 #include "../include/Ship4.h"
 
 Ship4::Ship4() {
     numOfAliveParts = length;
     setAlive(true);
-    //new allocation
     shipSquare = new std::string[numOfAliveParts];
 }
 
@@ -16,10 +11,6 @@ Ship4::~Ship4() {
 }
 
 void Ship4::initShip(std::string *shipSquares) {
-    //shipSquare[0] = shipSquares[0];
-    //shipSquare[1] = shipSquares[1];
-    //shipSquare[2] = shipSquares[2];
-    //shipSquare[3] = shipSquares[3];
     for(int i = 0; i < length; i++) {
         shipSquare[i] = shipSquares[i];
     }

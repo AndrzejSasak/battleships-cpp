@@ -1,13 +1,8 @@
-//
-// Created by endriu on 15.12.2021.
-//
-
 #include "../include/Ship2.h"
 
 Ship2::Ship2() {
     numOfAliveParts = length;
     setAlive(true);
-    //new allocation
     shipSquare = new std::string[numOfAliveParts];
 }
 

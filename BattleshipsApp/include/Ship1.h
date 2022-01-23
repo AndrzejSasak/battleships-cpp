@@ -1,9 +1,6 @@
-//
-// Created by endriu on 03.01.2022.
-//
-
 #ifndef JIPP2_SHIP1_H
 #define JIPP2_SHIP1_H
+
 #include "Ship.h"
 
 class Ship1 : public Ship {

@@ -149,11 +149,12 @@ std::string readSquares(std::string line, int index1, int index2) {
 void pickAllEnemyShips(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Ship *enemyShips4[], Enemy *enemy, Interface *interf) {
     std::fstream fboard;
 
+    int numOfBoards = 10;
     //choosing a board from a file
-    int boardNumber = rand() % 2 + 1;
+    int boardNumber = rand() % numOfBoards + 1;
     std::string boardNumberStr = std::to_string(boardNumber);
     std::string boardFilepath = "../../BattleshipsApp/boards/board" + boardNumberStr + ".txt";
-    std::cout << "Board chosen: " << boardFilepath << std::endl;
+    //std::cout << "Board chosen: " << boardFilepath << std::endl;
 
     fboard.open(boardFilepath, std::ios::in);
     if(!fboard.is_open()) {
@@ -175,8 +176,6 @@ void pickAllEnemyShips(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShip
         std::string shipSquare[2];
         shipSquare[0] = readSquares(line, 0, 1);
         shipSquare[1] = readSquares(line, 2, 3);
-        //shipSquare[0] = std::string(1, line[0]) + std::string(1, line[1]);
-        //shipSquare[1] = std::string(1, line[2]) + std::string(1, line[3]);
         enemyShips2[i]->initShip(shipSquare);
         //for(int j = 0; j < enemyShips2[0]->getLength(); j++) interf->setTakenByEnemyShip(shipSquare[j]);
     }
@@ -186,12 +185,6 @@ void pickAllEnemyShips(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShip
         shipSquare[0] = readSquares(line, 0, 1);
         shipSquare[1] = readSquares(line, 2, 3);
         shipSquare[2] = readSquares(line, 4, 5);
-
-        /*
-        shipSquare[0] = std::string(1, line[0]) + std::string(1, line[1]);
-        shipSquare[1] = std::string(1, line[2]) + std::string(1, line[3]);
-        shipSquare[2] = std::string(1, line[4]) + std::string(1, line[5]);
-         */
         enemyShips3[i]->initShip(shipSquare);
         //for(int j = 0; j < enemyShips3[0]->getLength(); j++) interf->setTakenByEnemyShip(shipSquare[j]);
     }
@@ -202,12 +195,6 @@ void pickAllEnemyShips(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShip
         shipSquare[1] = readSquares(line, 2, 3);
         shipSquare[2] = readSquares(line, 4, 5);
         shipSquare[3] = readSquares(line, 6, 7);
-        /*
-        shipSquare[0] = std::string(1, line[0]) + std::string(1, line[1]);
-        shipSquare[1] = std::string(1, line[2]) + std::string(1, line[3]);
-        shipSquare[2] = std::string(1, line[4]) + std::string(1, line[5]);
-        shipSquare[3] = std::string(1, line[6]) + std::string(1, line[7]);
-         */
         enemyShips4[i]->initShip(shipSquare);
         //for(int j = 0; j < enemyShips4[0]->getLength(); j++) interf->setTakenByEnemyShip(shipSquare[j]);
     }
@@ -291,8 +278,6 @@ void pickUserShip(Interface *interf, Ship *userShip) {
 
         std::cin >> shipSquares[i];
         shipSquares[i].at(0) = toupper(shipSquares[i].at(0));
-        //std::cout << "VALUE 1 = " << shipSquares[i-1].at(1) << std::endl;
-        //std::cout << "VALUE 2 = " << shipSquares[i].at(1) << std::endl;
 
         //checking if is input is in form of 2 char squares for example: A1, B5, J9 etc
         if(shipSquares[i].length() != 2) {
@@ -459,8 +444,12 @@ int checkIfSquareWasAlreadyShot(std::string &guessSquare, T *playerShooting) {
     }
     return 0;
 }
+//only allowing User and Enemy types
+template int checkIfSquareWasAlreadyShot<User>(std::string&, User*);
+template int checkIfSquareWasAlreadyShot<Enemy>(std::string&, Enemy*);
 
 int userShoot(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Ship* enemyShips4[], Interface *interf, User *user, Enemy *playerShotAt) {
+
     std::string guessSquare;
     std::cout << "Shoot at a square: " << std::endl;
 
@@ -492,13 +481,7 @@ int userShoot(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Shi
 
     user->setShotSquare(user->getNumOfShots(), guessSquare);
     user->setNumOfShots(user->getNumOfShots() + 1);
-    /*
-    bool status[4] = {false, false, false, false};
-    status[0] = checkIfGuessWasCorrect(enemyShips1, guessSquare, interf, playerShotAt);
-    status[1] = checkIfGuessWasCorrect(enemyShips2, guessSquare, interf, playerShotAt);
-    status[2] = checkIfGuessWasCorrect(enemyShips3, guessSquare, interf, playerShotAt);
-    status[3] = checkIfGuessWasCorrect(enemyShips4, guessSquare, interf, playerShotAt);
-    */
+
     int status[4] = {0, 0, 0, 0};
     status[0] = checkIfGuessWasCorrect(enemyShips1, guessSquare, interf, playerShotAt);
     status[1] = checkIfGuessWasCorrect(enemyShips2, guessSquare, interf, playerShotAt);
@@ -517,9 +500,7 @@ int userShoot(Ship *enemyShips1[], Ship *enemyShips2[], Ship *enemyShips3[], Shi
         interf->setAlreadyShotEnemySquare(guessSquare);
         return status[0];
     }
-
 }
-
 
 int enemyShoot(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship *userShips4[], Interface *interf, Enemy *enemy, User *playerShotAt) {
 
@@ -529,15 +510,12 @@ int enemyShoot(Ship *userShips1[], Ship *userShips2[], Ship *userShips3[], Ship 
     int wasShot = checkIfSquareWasAlreadyShot(guessSquare, enemy);
 
     while(wasShot != 0) {
-       // std::cout <<  "Enemy has already shot at this square! Enemy is choosing another square. " << std::endl;
         chooseSquare(guessSquare);
         wasShot = checkIfSquareWasAlreadyShot(guessSquare, enemy);
     }
 
     enemy->setShotSquare(enemy->getNumOfShots(), guessSquare);
     enemy->setNumOfShots(enemy->getNumOfShots() + 1);
-
-    //std::cout << "NUM OF SHOTS: " << enemy->getNumOfShots() << std::endl;
 
     //std::cout << "Enemy is shooting at square " << guessSquare << "..." << std::endl;
 

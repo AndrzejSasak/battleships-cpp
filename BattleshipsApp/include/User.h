@@ -1,9 +1,6 @@
-//
-// Created by endriu on 08.01.2022.
-//
-
 #ifndef BATTLESHIPS_USER_H
 #define BATTLESHIPS_USER_H
+
 #include <iostream>
 
 class User {

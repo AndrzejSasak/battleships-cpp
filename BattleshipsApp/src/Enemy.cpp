@@ -1,7 +1,3 @@
-//
-// Created by endriu on 08.01.2022.
-//
-
 #include "../include/Enemy.h"
 
 Enemy::Enemy(int numOfShips1, int numOfShips2, int numOfShips3, int numOfShips4, int numOfAliveShipPts):

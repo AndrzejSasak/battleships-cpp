@@ -1,12 +1,7 @@
-//
-// Created by endriu on 15.12.2021.
-//
-
 #include "../include/Interface.h"
-#include "../include/Ship.h"
+
 #include <lib.h>
 #include <iostream>
-
 
 #define TAKENBYSHIP "@"
 #define FREESQUARE "."
@@ -24,7 +19,6 @@ Interface::Interface() {
     }
 }
 
-//prints interf
 void Interface::printInterface()  {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     std::cout << "YOUR AREA:" << std::endl;
@@ -152,7 +146,6 @@ void Interface::checkSurroundings(int squareIndex, int surroundingSquareIndex)  
     }
 }
 
-//sets an unused user square to a ship square
 void Interface::setTakenByUserShip(std::string newSquare) {
     int squareIndex = parseSquareInputToIndex(newSquare);
     userArea[squareIndex] = TAKENBYSHIP;
@@ -166,16 +159,6 @@ void Interface::setTakenByUserShip(std::string newSquare) {
         checkSurroundings(squareIndex, 9);
         checkSurroundings(squareIndex, 10);
         checkSurroundings(squareIndex, 11);
-        /*
-        if (userArea[squareIndex-11] != TAKENBYSHIP) userArea[squareIndex-11] = SURROUNDINGSHIP;
-        if (userArea[squareIndex-10] != TAKENBYSHIP) userArea[squareIndex-10] = SURROUNDINGSHIP;
-        if (userArea[squareIndex-9] != TAKENBYSHIP) userArea[squareIndex-9] = SURROUNDINGSHIP;
-        if (userArea[squareIndex-1] != TAKENBYSHIP) userArea[squareIndex-1] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+1] != TAKENBYSHIP) userArea[squareIndex+1] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+9] != TAKENBYSHIP) userArea[squareIndex+9] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+10] != TAKENBYSHIP) userArea[squareIndex+10] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+11] != TAKENBYSHIP) userArea[squareIndex+11] = SURROUNDINGSHIP;
-         */
         return;
     } else if (newSquare[1] == '0' && newSquare[0] != 'A' && newSquare[0] != 'J') {
         checkSurroundings(squareIndex, -10);
@@ -183,13 +166,6 @@ void Interface::setTakenByUserShip(std::string newSquare) {
         checkSurroundings(squareIndex, 1);
         checkSurroundings(squareIndex, 10);
         checkSurroundings(squareIndex, 11);
-        /*
-        if (userArea[squareIndex-10] != TAKENBYSHIP) userArea[squareIndex-10] = SURROUNDINGSHIP;
-        if (userArea[squareIndex-9] != TAKENBYSHIP) userArea[squareIndex-9] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+1] != TAKENBYSHIP) userArea[squareIndex+1] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+10] != TAKENBYSHIP) userArea[squareIndex+10] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+11] != TAKENBYSHIP) userArea[squareIndex+11] = SURROUNDINGSHIP;
-         */
         return;
     } else if (newSquare[1] == '9' && newSquare[0] != 'A' && newSquare[0] != 'J') {
         checkSurroundings(squareIndex, -11);
@@ -197,12 +173,6 @@ void Interface::setTakenByUserShip(std::string newSquare) {
         checkSurroundings(squareIndex, -10);
         checkSurroundings(squareIndex, 9);
         checkSurroundings(squareIndex, 10);
-        /*
-        if (userArea[squareIndex-11] != TAKENBYSHIP) userArea[squareIndex-11] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+1] != TAKENBYSHIP) userArea[squareIndex+1] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+9] != TAKENBYSHIP) userArea[squareIndex+9] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+10] != TAKENBYSHIP)userArea[squareIndex+10] = SURROUNDINGSHIP;
-         */
         return;
     } else if (newSquare[0] == 'A' && newSquare[1] != '0' && newSquare[1] != '9') {
         checkSurroundings(squareIndex, -1);
@@ -210,13 +180,6 @@ void Interface::setTakenByUserShip(std::string newSquare) {
         checkSurroundings(squareIndex, 9);
         checkSurroundings(squareIndex, 10);
         checkSurroundings(squareIndex, 11);
-        /*
-        if (userArea[squareIndex-1] != TAKENBYSHIP) userArea[squareIndex-1] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+1] != TAKENBYSHIP) userArea[squareIndex+1] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+9] != TAKENBYSHIP) userArea[squareIndex+9] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+10] != TAKENBYSHIP) userArea[squareIndex+10] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+11] != TAKENBYSHIP) userArea[squareIndex+11] = SURROUNDINGSHIP;
-         */
         return;
     } else if (newSquare[0] == 'J' && newSquare[1] != '0' && newSquare[1] != '9') {
         checkSurroundings(squareIndex, -1);
@@ -224,58 +187,31 @@ void Interface::setTakenByUserShip(std::string newSquare) {
         checkSurroundings(squareIndex, -11);
         checkSurroundings(squareIndex, -10);
         checkSurroundings(squareIndex, -9);
-        /*
-        if (userArea[squareIndex-1] != TAKENBYSHIP) userArea[squareIndex-1] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+1] != TAKENBYSHIP) userArea[squareIndex+1] = SURROUNDINGSHIP;
-        if (userArea[squareIndex-11] != TAKENBYSHIP) userArea[squareIndex-11] = SURROUNDINGSHIP;
-        if (userArea[squareIndex-10] != TAKENBYSHIP) userArea[squareIndex-10] = SURROUNDINGSHIP;
-        if (userArea[squareIndex-9] != TAKENBYSHIP) userArea[squareIndex-9] = SURROUNDINGSHIP;
-         */
         return;
     } else if(newSquare[0] == 'A' && newSquare[1] == '0') {
         checkSurroundings(squareIndex, 1);
         checkSurroundings(squareIndex, 10);
         checkSurroundings(squareIndex, 11);
-        /*
-        if (userArea[squareIndex+1] != TAKENBYSHIP) userArea[squareIndex+1] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+10] != TAKENBYSHIP) userArea[squareIndex+10] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+11] != TAKENBYSHIP) userArea[squareIndex+11] = SURROUNDINGSHIP;
-         */
         return;
     } else if(newSquare[0] == 'J' && newSquare[1] == '0') {
         checkSurroundings(squareIndex, 1);
         checkSurroundings(squareIndex, -9);
         checkSurroundings(squareIndex, -10);
-        /*
-        if (userArea[squareIndex+1] != TAKENBYSHIP) userArea[squareIndex+1] = SURROUNDINGSHIP;
-        if (userArea[squareIndex-9] != TAKENBYSHIP) userArea[squareIndex-9] = SURROUNDINGSHIP;
-        if (userArea[squareIndex-10] != TAKENBYSHIP) userArea[squareIndex-10] = SURROUNDINGSHIP;
-         */
         return;
     } else if(newSquare[0] == 'A' && newSquare[1] == '9') {
         checkSurroundings(squareIndex, -1);
         checkSurroundings(squareIndex, 9);
         checkSurroundings(squareIndex, 10);
-        /*
-        if (userArea[squareIndex-1] != TAKENBYSHIP) userArea[squareIndex-1] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+9] != TAKENBYSHIP) userArea[squareIndex+9] = SURROUNDINGSHIP;
-        if (userArea[squareIndex+10] != TAKENBYSHIP) userArea[squareIndex+10] = SURROUNDINGSHIP;
-         */
         return;
     } else if(newSquare[0] == 'J' && newSquare[1] == '9') {
         checkSurroundings(squareIndex, -1);
         checkSurroundings(squareIndex, -11);
         checkSurroundings(squareIndex, -10);
-        /*
-        if (userArea[squareIndex-1] != TAKENBYSHIP) userArea[squareIndex-1] = SURROUNDINGSHIP;
-        if (userArea[squareIndex-11] != TAKENBYSHIP) userArea[squareIndex-11] = SURROUNDINGSHIP;
-        if (userArea[squareIndex-10] != TAKENBYSHIP) userArea[squareIndex-10] = SURROUNDINGSHIP;
-         */
         return;
     }
 }
 
-[[maybe_unused]] void Interface::setTakenByEnemyShip(std::string newSquare) {
+void Interface::setTakenByEnemyShip(std::string newSquare) {
     int squareIndex = parseSquareInputToIndex(newSquare);
     enemyArea[squareIndex] = TAKENBYSHIP;
 }
@@ -301,7 +237,7 @@ void Interface::setDestroyedEnemyShipPart(std::string newSquare) {
 }
 
 bool Interface::isTakenByShip(std::string newSquare) {
-    int isTaken = false;
+    bool isTaken = false;
     int squareIndex = parseSquareInputToIndex(newSquare);
     if(userArea[squareIndex] == TAKENBYSHIP || userArea[squareIndex] == SURROUNDINGSHIP) {
         isTaken = true;

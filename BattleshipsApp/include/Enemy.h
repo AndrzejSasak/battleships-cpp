@@ -1,7 +1,3 @@
-//
-// Created by endriu on 08.01.2022.
-//
-
 #ifndef BATTLESHIPS_ENEMY_H
 #define BATTLESHIPS_ENEMY_H
 

@@ -1,7 +1,3 @@
-//
-// Created by endriu on 08.01.2022.
-//
-
 #include "../include/User.h"
 
 User::User(int numOfShips1, int numOfShips2, int numOfShips3, int numOfShips4, int numOfAliveShipPts):
